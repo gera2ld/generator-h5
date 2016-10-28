@@ -1,0 +1,15 @@
+{
+  "name": "generator-h5",
+  "version": "0.0.0",
+  "description": "",
+  "files": ["app"],
+  "main": "app/index.js",
+  "keywords": [
+    "yeoman"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "yeoman-generator": "^0.24.1"
+  }
+}
