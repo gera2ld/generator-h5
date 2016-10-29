@@ -20,7 +20,21 @@ module.exports = yeoman.Base.extend({
   },
   install() {
     if (!this.options['skip-install']) {
-      this.npmInstall();
+      this.npmInstall([
+        'autoprefixer',
+        'browser-sync',
+        'del',
+        'dotenv',
+        'gulp',
+        'gulp-cssnano',
+        'gulp-eslint',
+        'gulp-htmlmin',
+        'gulp-postcss',
+        'gulp-rename',
+        'gulp-sass',
+        'gulp-uglify',
+        'gulp-util',
+      ], {'save-dev': true});
     }
   },
 });

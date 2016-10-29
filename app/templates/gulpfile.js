@@ -1,46 +1,57 @@
 require('dotenv').config({silent: true});
 const path = require('path');
+const del = require('del');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const rename = require('gulp-rename');
+const eslint = require('gulp-eslint');
+const cssnano = require('gulp-cssnano');
+const uglify = require('gulp-uglify');
+const minifyHtml = require('gulp-htmlmin');
 const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const browserSync = require('browser-sync').create();
-const eslint = require('gulp-eslint');
 
 const DIST = 'dist';
-const AUTOPREFIXER_BROWSERS = [
-  'Android 2.3',
-  'Android >= 4',
-  'Chrome >= 35',
-  'Firefox >= 31',
-  'Explorer >= 9',
-  'iOS >= 7',
-  'Opera >= 12',
-  'Safari >= 7.1',
-];
+const isProd = process.env.NODE_ENV === 'production';
 
 gulp.task('clean', () => del(DIST));
 
 gulp.task('css', () => {
-  return gulp.src('src/style.scss', {base: 'src'})
+  let stream = gulp.src('src/style.scss', {base: 'src'})
   .pipe(logError(sass({importer: importModuleSass})))
-  .pipe(postcss([ autoprefixer({ browsers: AUTOPREFIXER_BROWSERS }) ]))
+  .pipe(postcss([autoprefixer()]))
   .pipe(rename(file => {
     file.basename = 'style';
-  }))
-  .pipe(gulp.dest(DIST))
+  }));
+  if (isProd) stream = stream
+  .pipe(cssnano());
+  stream = stream
+  .pipe(gulp.dest(DIST));
+  if (!isProd) stream = stream
   .pipe(browserSync.stream());
+  return stream;
 });
 
 gulp.task('js', () => {
-  return gulp.src('src/app.js')
+  let stream = gulp.src('src/app.js');
+  if (isProd) stream = stream
+  .pipe(uglify());
+  return stream
   .pipe(gulp.dest(DIST));
 });
 
 gulp.task('html', () => {
-  return gulp.src('src/index.html')
+  let stream = gulp.src('src/index.html');
+  if (isProd) stream = stream
+  .pipe(minifyHtml({
+    removeComments: true,
+    collapseWhitespace: true,
+    conservativeCollapse: true,
+    removeAttributeQuotes: true,
+  }));
+  return stream
   .pipe(gulp.dest(DIST));
 });
 
