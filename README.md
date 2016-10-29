@@ -5,26 +5,47 @@ Yeoman generator to create an HTML5 workspace rapidly.
 
 Usage
 ---
-Make sure yeoman is installed:
+1. Make sure yeoman is installed:
 
-``` sh
-$ npm i yo -g
-```
+   ``` sh
+   $ npm i yo -g
+   ```
 
-Initialize project:
+1. Initialize project:
 
-``` sh
-$ mkdir myproject
-$ cd myproject
-$ yo generator-h5
-```
+   ``` sh
+   $ mkdir myproject
+   $ cd myproject
+   ```
 
-Develop with:
-``` sh
-$ npm run dev
-```
+   You may either initialize the project from local path or globally installed package:
 
-Lint:
-``` sh
-$ npm run lint
-```
+   * local path
+
+   ``` sh
+   # Make sure `generator-h5` is cloned somewhere local
+   $ git clone https://github.com/TapasFE/generator-h5.git
+
+   $ yo /path/to/generator-h5
+   ```
+
+   * globally installed
+
+   ``` sh
+   # Make sure `generator-h5` is installed globally
+   $ npm i TapasFE/generator-h5 -g
+
+   $ yo h5
+   ```
+
+1. Develop:
+
+   ``` sh
+   $ npm run dev
+   ```
+
+   Lint:
+
+   ``` sh
+   $ npm run lint
+   ```
