@@ -3,15 +3,18 @@ const path = require('path');
 const del = require('del');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
-const rename = require('gulp-rename');
 const eslint = require('gulp-eslint');
 const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
 const minifyHtml = require('gulp-htmlmin');
-const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const browserSync = require('browser-sync').create();
+<% if (preProcessor === 'less') { -%>
+const less = require('gulp-less');
+<% } else if (preProcessor === 'scss') { -%>
+const sass = require('gulp-sass');
+<% } -%>
 
 const DIST = 'dist';
 const isProd = process.env.NODE_ENV === 'production';
@@ -19,12 +22,13 @@ const isProd = process.env.NODE_ENV === 'production';
 gulp.task('clean', () => del(DIST));
 
 gulp.task('css', () => {
-  let stream = gulp.src('src/style.scss', {base: 'src'})
+  let stream = gulp.src('src/style.<%= preProcessor || 'css' %>', {base: 'src'})
+<% if (preProcessor === 'less') { -%>
+  .pipe(less())
+<% } else if (preProcessor === 'scss') { -%>
   .pipe(logError(sass({importer: importModuleSass})))
-  .pipe(postcss([autoprefixer()]))
-  .pipe(rename(file => {
-    file.basename = 'style';
-  }));
+<% } -%>
+  .pipe(postcss([autoprefixer()]));
   if (isProd) stream = stream
   .pipe(cssnano());
   stream = stream
@@ -86,6 +90,7 @@ gulp.task('browser-sync', ['watch'], () => {
   });
 });
 
+<% if (preProcessor === 'scss') { -%>
 function importModuleSass(url, prev, done) {
   return {
     file: url.replace(/^~(\w.*)$/, (m, g) => path.resolve('node_modules', g)),
@@ -97,3 +102,4 @@ function logError(stream) {
     return this.emit('end');
   });
 }
+<% } %>
