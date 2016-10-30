@@ -52,6 +52,7 @@ module.exports = yeoman.Base.extend({
       'gulp-cssnano',
       'gulp-eslint',
       'gulp-htmlmin',
+      'gulp-plumber',
       'gulp-postcss',
       'gulp-uglify',
       'gulp-util',

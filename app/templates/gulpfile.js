@@ -3,6 +3,7 @@ const path = require('path');
 const del = require('del');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
+const plumber = require('gulp-plumber');
 const eslint = require('gulp-eslint');
 const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
@@ -23,10 +24,11 @@ gulp.task('clean', () => del(DIST));
 
 gulp.task('css', () => {
   let stream = gulp.src('src/style.<%= preProcessor || 'css' %>', {base: 'src'})
+  .pipe(plumber(logError))
 <% if (preProcessor === 'less') { -%>
   .pipe(less())
 <% } else if (preProcessor === 'scss') { -%>
-  .pipe(logError(sass({importer: importModuleSass})))
+  .pipe(sass({importer: importModuleSass}))
 <% } -%>
   .pipe(postcss([autoprefixer()]));
   if (isProd) stream = stream
@@ -76,7 +78,7 @@ gulp.task('lint', () => {
 });
 
 gulp.task('watch', ['default'], () => {
-  gulp.watch('src/**/*.scss', ['css']);
+  gulp.watch('src/**/*.<%= preProcessor || 'css' %>', ['css']);
   gulp.watch('src/**/*.js', ['js']).on('change', browserSync.reload);
   gulp.watch('src/**/*.html', ['html']).on('change', browserSync.reload);
 });
@@ -90,16 +92,14 @@ gulp.task('browser-sync', ['watch'], () => {
   });
 });
 
+function logError(err) {
+  gutil.log(err.toString());
+  return this.emit('end');
+}
 <% if (preProcessor === 'scss') { -%>
 function importModuleSass(url, prev, done) {
   return {
     file: url.replace(/^~(\w.*)$/, (m, g) => path.resolve('node_modules', g)),
   };
-}
-function logError(stream) {
-  return stream.on('error', function (err) {
-    gutil.log(err);
-    return this.emit('end');
-  });
 }
 <% } %>
