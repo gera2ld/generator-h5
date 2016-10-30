@@ -56,6 +56,7 @@ module.exports = yeoman.Base.extend({
       'gulp-postcss',
       'gulp-uglify',
       'gulp-util',
+      'gulp-assets-injector',
     ];
     if (this.answers.preProcessor === 'less') {
       deps = deps.concat([

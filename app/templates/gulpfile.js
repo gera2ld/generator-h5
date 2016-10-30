@@ -11,6 +11,7 @@ const minifyHtml = require('gulp-htmlmin');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const browserSync = require('browser-sync').create();
+const assetsInjector = require('gulp-assets-injector')();
 <% if (preProcessor === 'less') { -%>
 const less = require('gulp-less');
 <% } else if (preProcessor === 'scss') { -%>
@@ -34,6 +35,8 @@ gulp.task('css', () => {
   if (isProd) stream = stream
   .pipe(cssnano());
   stream = stream
+  .pipe(assetsInjector.collect());
+  if (!isProd) stream = stream
   .pipe(gulp.dest(DIST));
   if (!isProd) stream = stream
   .pipe(browserSync.stream());
@@ -44,12 +47,16 @@ gulp.task('js', () => {
   let stream = gulp.src('src/app.js');
   if (isProd) stream = stream
   .pipe(uglify());
-  return stream
+  stream = stream
+  .pipe(assetsInjector.collect());
+  if (!isProd) stream = stream
   .pipe(gulp.dest(DIST));
+  return stream;
 });
 
-gulp.task('html', () => {
-  let stream = gulp.src('src/index.html');
+gulp.task('html', ['css', 'js'], () => {
+  let stream = gulp.src('src/index.html')
+  .pipe(assetsInjector.inject({link: !isProd}));
   if (isProd) stream = stream
   .pipe(minifyHtml({
     removeComments: true,
@@ -68,7 +75,7 @@ gulp.task('copy', () => {
   .pipe(gulp.dest(DIST));
 });
 
-gulp.task('default', ['css', 'js', 'html', 'copy']);
+gulp.task('default', ['html', 'copy']);
 
 gulp.task('lint', () => {
   return gulp.src('src/**/*.js')
