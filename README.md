@@ -24,7 +24,7 @@ Usage
 
    ``` sh
    # Make sure `generator-h5` is cloned somewhere local
-   $ git clone https://github.com/TapasFE/generator-h5.git
+   $ git clone https://github.com/gera2ld/generator-h5.git
 
    $ yo /path/to/generator-h5
    ```
@@ -33,7 +33,7 @@ Usage
 
    ``` sh
    # Make sure `generator-h5` is installed globally
-   $ npm i TapasFE/generator-h5 -g
+   $ npm i gera2ld/generator-h5 -g
 
    $ yo h5
    ```

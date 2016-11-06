@@ -7,7 +7,7 @@
   "keywords": [
     "yeoman"
   ],
-  "author": "",
+  "author": "Gerald <i@gerald.top>",
   "license": "ISC",
   "dependencies": {
     "yeoman-generator": "^0.24.1"
