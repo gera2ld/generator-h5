@@ -57,18 +57,13 @@ module.exports = yeoman.Base.extend({
     .then(promptCompatibility)
     .then(answers => this.answers = answers);
   },
-  lint() {
-    this.template('_eslintrc.yml', '.eslintrc.yml');
-  },
-  packageJSON() {
+  app() {
     this.template('_package.json', 'package.json');
-  },
-  git() {
     this.template('_gitignore', '.gitignore');
     this.template('_git_prepush', '.git/hooks/prepush');
-  },
-  app() {
     // this.template('_env', '.env');
+    this.template('_eslintrc.yml', '.eslintrc.yml');
+    this.template('_editorconfig', '.editorconfig');
     this.template('gulpfile.js', this.answers);
     this.template('browserslist', this.answers);
     this.template('README.md');
