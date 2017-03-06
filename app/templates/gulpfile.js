@@ -8,9 +8,20 @@ const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
 <% if (es6) { -%>
 const rollup = require('gulp-rollup');
-const babel = require('rollup-plugin-babel')({
-  runtimeHelpers: true,
-});
+const rollupOptions = {
+  format: 'iife',
+  plugins: [
+    require('rollup-plugin-babel')({
+      runtimeHelpers: true,
+      exclude: 'node_modules/**',
+    }),
+    require('rollup-plugin-node-resolve')(),
+    require('rollup-plugin-commonjs')({
+      include: 'node_modules/**',
+    }),
+  ],
+  allowRealFiles: true,
+};
 <% } -%>
 const minifyHtml = require('gulp-htmlmin');
 const postcss = require('gulp-postcss');
@@ -51,11 +62,9 @@ gulp.task('css', () => {
 gulp.task('js', () => {
   let stream = gulp.src('src/app.js');
   <% if (es6) { -%>
-  stream = stream.pipe(rollup({
-    format: 'iife',
-    plugins: [babel],
+  stream = stream.pipe(rollup(Object.assign({
     entry: 'src/app.js',
-  }));
+  }, rollupOptions)));
   <% } -%>
   if (isProd) stream = stream
   .pipe(uglify());

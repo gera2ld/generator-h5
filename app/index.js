@@ -106,6 +106,8 @@ module.exports = class Html5Generator extends Generator {
       deps.push(...[
         'gulp-rollup',
         'rollup-plugin-babel',
+        'rollup-plugin-node-resolve',
+        'rollup-plugin-commonjs',
         'babel-runtime',
         'babel-preset-env',
         'babel-plugin-transform-runtime',
