@@ -1,15 +1,17 @@
 {
   "name": "generator-h5",
   "version": "0.0.0",
-  "description": "",
-  "files": ["app"],
+  "description": "Generate a project to develop HTML 5 pages",
+  "files": [
+    "app"
+  ],
   "main": "app/index.js",
   "keywords": [
-    "yeoman"
+    "yeoman-generator"
   ],
   "author": "Gerald <i@gerald.top>",
   "license": "ISC",
   "dependencies": {
-    "yeoman-generator": "^0.24.1"
+    "yeoman-generator": "^1.1.1"
   }
 }

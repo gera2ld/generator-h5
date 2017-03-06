@@ -1,4 +1,3 @@
-require('dotenv').config({silent: true});
 const path = require('path');
 const del = require('del');
 const gulp = require('gulp');
@@ -7,14 +6,20 @@ const plumber = require('gulp-plumber');
 const eslint = require('gulp-eslint');
 const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
+<% if (es6) { -%>
+const rollup = require('gulp-rollup');
+const babel = require('rollup-plugin-babel')({
+  runtimeHelpers: true,
+});
+<% } -%>
 const minifyHtml = require('gulp-htmlmin');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const browserSync = require('browser-sync').create();
 const assetsInjector = require('gulp-assets-injector')();
-<% if (preProcessor === 'less') { -%>
+<% if (cssProcessor === 'less') { -%>
 const less = require('gulp-less');
-<% } else if (preProcessor === 'scss') { -%>
+<% } else if (cssProcessor === 'scss') { -%>
 const sass = require('gulp-sass');
 <% } -%>
 
@@ -24,11 +29,11 @@ const isProd = process.env.NODE_ENV === 'production';
 gulp.task('clean', () => del(DIST));
 
 gulp.task('css', () => {
-  let stream = gulp.src('src/style.<%= preProcessor || 'css' %>', {base: 'src'})
+  let stream = gulp.src('src/style.<%= cssProcessor || 'css' %>', {base: 'src'})
   .pipe(plumber(logError))
-<% if (preProcessor === 'less') { -%>
+<% if (cssProcessor === 'less') { -%>
   .pipe(less())
-<% } else if (preProcessor === 'scss') { -%>
+<% } else if (cssProcessor === 'scss') { -%>
   .pipe(sass({importer: importModuleSass}))
 <% } -%>
   .pipe(postcss([autoprefixer()]));
@@ -45,6 +50,13 @@ gulp.task('css', () => {
 
 gulp.task('js', () => {
   let stream = gulp.src('src/app.js');
+  <% if (es6) { -%>
+  stream = stream.pipe(rollup({
+    format: 'iife',
+    plugins: [babel],
+    entry: 'src/app.js',
+  }));
+  <% } -%>
   if (isProd) stream = stream
   .pipe(uglify());
   stream = stream
@@ -85,7 +97,7 @@ gulp.task('lint', () => {
 });
 
 gulp.task('watch', ['default'], () => {
-  gulp.watch('src/**/*.<%= preProcessor || 'css' %>', ['css']);
+  gulp.watch('src/**/*.<%= cssProcessor || 'css' %>', ['css']);
   gulp.watch('src/**/*.js', ['js']).on('change', browserSync.reload);
   gulp.watch('src/**/*.html', ['html']).on('change', browserSync.reload);
 });
@@ -103,7 +115,7 @@ function logError(err) {
   gutil.log(err.toString());
   return this.emit('end');
 }
-<% if (preProcessor === 'scss') { -%>
+<% if (cssProcessor === 'scss') { -%>
 function importModuleSass(url, prev, done) {
   return {
     file: url.replace(/^~(\w.*)$/, (m, g) => path.resolve('node_modules', g)),

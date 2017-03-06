@@ -1,0 +1,13 @@
+{
+  "name": "<%= name %>",
+  "version": "0.0.0",
+  "private": true,
+  "description": "<%= description %>",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "dev": "gulp browser-sync",
+    "build": "gulp clean && NODE_ENV=production gulp",
+    "lint": "gulp lint"
+  }
+}

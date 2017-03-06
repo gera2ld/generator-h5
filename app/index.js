@@ -1,4 +1,5 @@
-const yeoman = require('yeoman-generator');
+const fs = require('fs');
+const Generator = require('yeoman-generator');
 
 const utils = {
   identity(s) {
@@ -14,30 +15,42 @@ const utils = {
   },
 };
 
-module.exports = yeoman.Base.extend({
+module.exports = class Html5Generator extends Generator {
   prompting() {
-    function promptPreProcessors(answers) {
-      const processors = [{
-        name: 'None',
-        value: '',
-      }, {
-        name: 'Less',
-        value: 'less',
-      }, {
-        name: 'Sass',
-        value: 'scss',
-      }];
-      return _this.prompt([{
-        name: 'preProcessor',
+    return this.prompt([
+      {
+        name: 'name',
+        type: 'input',
+        message: 'Your project name',
+        default: this.appname,
+      },
+      {
+        name: 'description',
+        type: 'input',
+        message: 'Description of your project',
+      },
+      {
+        name: 'es6',
+        type: 'confirm',
+        message: 'Would you like to use ES6?',
+      },
+      {
+        name: 'cssProcessor',
         type: 'list',
         message: 'Which CSS pre-processor would you like to use?',
-        choices: processors,
-      }])
-      .then(res => Object.assign(answers, res));
-    }
-    function promptCompatibility(answers) {
-      return _this.prompt([{
-        name: 'compatibility',
+        choices: [{
+          name: 'None',
+          value: '',
+        }, {
+          name: 'Less',
+          value: 'less',
+        }, {
+          name: 'Sass',
+          value: 'scss',
+        }],
+      },
+      {
+        name: 'cssCompat',
         type: 'list',
         message: 'How many browsers would you like to support for CSS?',
         choices: [{
@@ -45,40 +58,40 @@ module.exports = yeoman.Base.extend({
           value: '',
         }, {
           name: 'include older browsers since IE 9',
-          value: 'compatible',
+          value: 'ie9',
         }],
-      }])
-      .then(res => Object.assign(answers, res));
-    }
-    const _this = this;
-    return promptPreProcessors({
-      utils,
-    })
-    .then(promptCompatibility)
-    .then(answers => this.answers = answers);
-  },
+      }
+    ])
+    .then(answers => {
+      this.state = Object.assign({
+        utils,
+      }, answers);
+    });
+  }
+
   app() {
-    this.template('_package.json', 'package.json');
-    this.template('_gitignore', '.gitignore');
-    this.template('_git_prepush', '.git/hooks/prepush');
-    // this.template('_env', '.env');
-    this.template('_eslintrc.yml', '.eslintrc.yml');
-    this.template('_editorconfig', '.editorconfig');
-    this.template('gulpfile.js', this.answers);
-    this.template('browserslist', this.answers);
-    this.template('README.md');
-    this.template('src/index.html');
-    this.template('src/app.js');
-    this.template('src/style.css', `src/style.${this.answers.preProcessor || 'css'}`);
-    // this.directory('src');
-    this.mkdir('src/assets');
-  },
+    const rootFileDir = this.templatePath('root-files');
+    fs.readdirSync(rootFileDir)
+    .forEach(name => {
+      if (name.startsWith('.')) return;
+      this.fs.copy(`${rootFileDir}/${name}`, this.destinationPath(name.replace(/^_/, '.')));
+    });
+    ['package.json', 'gulpfile.js', 'browserslist', 'README.md', 'src/index.html']
+    .concat(this.state.es6 ? ['_babelrc'] : [])
+    .forEach(name => {
+      this.fs.copyTpl(this.templatePath(name), this.destinationPath(name.replace(/^_/, '.')), this.state);
+    })
+    this.fs.copy(this.templatePath('_git_prepush'), this.destinationPath('.git/hooks/prepush'));
+    this.fs.copy(this.templatePath('src/app.js'), this.destinationPath('src/app.js'));
+    this.fs.copy(this.templatePath('src/style.css'), this.destinationPath(`src/style.${this.state.cssProcessor || 'css'}`));
+    // this.mkdir('src/assets');
+  }
+
   install() {
-    let deps = [
+    const deps = [
       'autoprefixer',
       'browser-sync',
       'del',
-      'dotenv',
       'gulp',
       'gulp-cssnano',
       'gulp-eslint',
@@ -89,15 +102,24 @@ module.exports = yeoman.Base.extend({
       'gulp-util',
       'gulp-assets-injector',
     ];
-    if (this.answers.preProcessor === 'less') {
-      deps = deps.concat([
+    if (this.state.es6) {
+      deps.push(...[
+        'gulp-rollup',
+        'rollup-plugin-babel',
+        'babel-runtime',
+        'babel-preset-env',
+        'babel-plugin-transform-runtime',
+      ]);
+    }
+    if (this.state.cssProcessor === 'less') {
+      deps.push(...[
         'gulp-less',
       ]);
-    } else if (this.answers.preProcessor === 'scss') {
-      deps = deps.concat([
+    } else if (this.state.cssProcessor === 'scss') {
+      deps.push(...[
         'gulp-sass',
       ]);
     }
-    this.npmInstall(deps, {'save-dev': true});
-  },
-});
+    this.yarnInstall(deps, {dev: true});
+  }
+};
