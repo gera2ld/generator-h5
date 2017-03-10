@@ -82,7 +82,7 @@ module.exports = class Html5Generator extends Generator {
       this.fs.copyTpl(this.templatePath(name), this.destinationPath(name.replace(/^_/, '.')), this.state);
     })
     this.fs.copy(this.templatePath('_git_prepush'), this.destinationPath('.git/hooks/prepush'));
-    this.fs.copy(this.templatePath('src/app.js'), this.destinationPath('src/app.js'));
+    this.fs.copyTpl(this.templatePath('src/app.js'), this.destinationPath('src/app.js'), this.state);
     this.fs.copy(this.templatePath('src/style.css'), this.destinationPath(`src/style.${this.state.cssProcessor || 'css'}`));
     // this.mkdir('src/assets');
   }
