@@ -35,21 +35,6 @@ module.exports = class Html5Generator extends Generator {
         message: 'Would you like to use ES6?',
       },
       {
-        name: 'cssProcessor',
-        type: 'list',
-        message: 'Which CSS pre-processor would you like to use?',
-        choices: [{
-          name: 'None',
-          value: '',
-        }, {
-          name: 'Less',
-          value: 'less',
-        }, {
-          name: 'Sass',
-          value: 'scss',
-        }],
-      },
-      {
         name: 'cssCompat',
         type: 'list',
         message: 'How many browsers would you like to support for CSS?',
@@ -83,21 +68,22 @@ module.exports = class Html5Generator extends Generator {
     })
     this.fs.copy(this.templatePath('_git_prepush'), this.destinationPath('.git/hooks/prepush'));
     this.fs.copyTpl(this.templatePath('src/app.js'), this.destinationPath('src/app.js'), this.state);
-    this.fs.copy(this.templatePath('src/style.css'), this.destinationPath(`src/style.${this.state.cssProcessor || 'css'}`));
+    this.fs.copy(this.templatePath('src/style.css'), this.destinationPath('src/style.css'));
     // this.mkdir('src/assets');
   }
 
   install() {
     const deps = [
-      'autoprefixer',
       'browser-sync',
       'del',
       'gulp',
-      'gulp-cssnano',
       'gulp-eslint',
       'gulp-htmlmin',
       'gulp-plumber',
       'gulp-postcss',
+      'precss',
+      'autoprefixer',
+      'cssnano',
       'gulp-uglify',
       'gulp-util',
       'gulp-assets-injector',
@@ -111,15 +97,6 @@ module.exports = class Html5Generator extends Generator {
         'babel-runtime',
         'babel-preset-env',
         'babel-plugin-transform-runtime',
-      ]);
-    }
-    if (this.state.cssProcessor === 'less') {
-      deps.push(...[
-        'gulp-less',
-      ]);
-    } else if (this.state.cssProcessor === 'scss') {
-      deps.push(...[
-        'gulp-sass',
       ]);
     }
     this.yarnInstall(deps, {dev: true});

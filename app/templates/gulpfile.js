@@ -4,7 +4,6 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const plumber = require('gulp-plumber');
 const eslint = require('gulp-eslint');
-const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
 <% if (es6) { -%>
 const rollup = require('gulp-rollup');
@@ -25,14 +24,11 @@ const rollupOptions = {
 <% } -%>
 const minifyHtml = require('gulp-htmlmin');
 const postcss = require('gulp-postcss');
+const precss = require('precss');
 const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 const browserSync = require('browser-sync').create();
 const assetsInjector = require('gulp-assets-injector')();
-<% if (cssProcessor === 'less') { -%>
-const less = require('gulp-less');
-<% } else if (cssProcessor === 'scss') { -%>
-const sass = require('gulp-sass');
-<% } -%>
 
 const DIST = 'dist';
 const isProd = process.env.NODE_ENV === 'production';
@@ -40,17 +36,13 @@ const isProd = process.env.NODE_ENV === 'production';
 gulp.task('clean', () => del(DIST));
 
 gulp.task('css', () => {
-  let stream = gulp.src('src/style.<%= cssProcessor || 'css' %>', {base: 'src'})
+  let stream = gulp.src('src/style.css', {base: 'src'})
   .pipe(plumber(logError))
-<% if (cssProcessor === 'less') { -%>
-  .pipe(less())
-<% } else if (cssProcessor === 'scss') { -%>
-  .pipe(sass({importer: importModuleSass}))
-<% } -%>
-  .pipe(postcss([autoprefixer()]));
-  if (isProd) stream = stream
-  .pipe(cssnano());
-  stream = stream
+  .pipe(postcss([
+    precss(),
+    autoprefixer(),
+    isProd && cssnano(),
+  ].filter(Boolean)))
   .pipe(assetsInjector.collect());
   if (!isProd) stream = stream
   .pipe(gulp.dest(DIST));
@@ -106,7 +98,7 @@ gulp.task('lint', () => {
 });
 
 gulp.task('watch', ['default'], () => {
-  gulp.watch('src/**/*.<%= cssProcessor || 'css' %>', ['css']);
+  gulp.watch('src/**/*.css', ['css']);
   gulp.watch('src/**/*.js', ['js']).on('change', browserSync.reload);
   gulp.watch('src/**/*.html', ['html']).on('change', browserSync.reload);
 });
@@ -124,10 +116,3 @@ function logError(err) {
   gutil.log(err.toString());
   return this.emit('end');
 }
-<% if (cssProcessor === 'scss') { -%>
-function importModuleSass(url, prev, done) {
-  return {
-    file: url.replace(/^~(\w.*)$/, (m, g) => path.resolve('node_modules', g)),
-  };
-}
-<% } %>
