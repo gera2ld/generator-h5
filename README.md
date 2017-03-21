@@ -16,8 +16,9 @@ Usage
 ---
 
 ``` sh
-# Make sure yeoman is installed
+# Make sure yeoman and yarn is installed
 $ npm i yo -g
+$ npm i yarn -g
 
 # Initialize your project
 $ cd my-project
