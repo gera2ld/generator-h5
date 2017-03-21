@@ -9,6 +9,12 @@ Development
 $ npm run dev
 ```
 
+Building
+---
+```sh
+$ npm run build
+```
+
 Lint
 ---
 ``` sh
