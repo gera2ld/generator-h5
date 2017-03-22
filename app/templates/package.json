@@ -1,5 +1,5 @@
 {
-  "name": "<%= name %>",
+  "name": "<%= name.replace(/\s+/g, '-').toLowerCase() %>",
   "version": "0.0.0",
   "private": true,
   "description": "<%= description %>",
@@ -7,7 +7,8 @@
   "license": "ISC",
   "scripts": {
     "dev": "gulp browser-sync",
-    "build": "gulp clean && NODE_ENV=production gulp",
+    "prebuild": "gulp clean",
+    "build": "cross-env NODE_ENV=production gulp",
     "lint": "gulp lint"
   }
 }

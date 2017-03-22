@@ -45,7 +45,13 @@ module.exports = class Html5Generator extends Generator {
           name: 'include older browsers since IE 9',
           value: 'ie9',
         }],
-      }
+      },
+      {
+        name: 'multiplePages',
+        type: 'confirm',
+        message: 'Would you like to develop multiple pages?',
+        default: false,
+      },
     ])
     .then(answers => {
       this.state = Object.assign({
@@ -54,27 +60,40 @@ module.exports = class Html5Generator extends Generator {
     });
   }
 
-  app() {
+  rootFiles() {
     const rootFileDir = this.templatePath('root-files');
     fs.readdirSync(rootFileDir)
     .forEach(name => {
       if (name.startsWith('.')) return;
       this.fs.copy(`${rootFileDir}/${name}`, this.destinationPath(name.replace(/^_/, '.')));
     });
-    ['package.json', 'gulpfile.js', 'browserslist', 'README.md', 'src/index.html']
+    ['package.json', 'gulpfile.js', 'browserslist', 'README.md']
     .concat(this.state.es6 ? ['_babelrc'] : [])
     .forEach(name => {
       this.fs.copyTpl(this.templatePath(name), this.destinationPath(name.replace(/^_/, '.')), this.state);
-    })
-    this.fs.copy(this.templatePath('_git_prepush'), this.destinationPath('.git/hooks/prepush'));
-    this.fs.copyTpl(this.templatePath('src/app.js'), this.destinationPath('src/app.js'), this.state);
-    this.fs.copy(this.templatePath('src/style.css'), this.destinationPath('src/style.css'));
-    // this.mkdir('src/assets');
+    });
+  }
+
+  app() {
+    if (this.state.multiplePages) {
+      this.fs.copy(this.templatePath('page/contents.html'), this.destinationPath('src/index.html'));
+      ['index.html', 'app.js', 'style.css']
+      .forEach(name => {
+        this.fs.copyTpl(this.templatePath(`page/${name}`), this.destinationPath(`src/pages/home/${name}`), this.state);
+      });
+    } else {
+      ['index.html', 'app.js', 'style.css']
+      .forEach(name => {
+        this.fs.copyTpl(this.templatePath(`page/${name}`), this.destinationPath(`src/${name}`), this.state);
+      });
+    }
+    this.fs.copy(this.templatePath('assets'), this.destinationPath('src/assets'));
   }
 
   install() {
     const deps = [
       'browser-sync',
+      'cross-env',
       'del',
       'gulp',
       'gulp-eslint',
@@ -99,6 +118,16 @@ module.exports = class Html5Generator extends Generator {
         'babel-plugin-transform-runtime',
       ]);
     }
-    this.yarnInstall(deps, {dev: true});
+    if (this.state.multiplePages) {
+      deps.push(...[
+        'es6-promisify',
+      ]);
+    }
+    const res = this.spawnCommandSync('yarn', ['--version']);
+    if (res.error && res.error.code === 'ENOENT') {
+      this.npmInstall(deps, {saveDev: true});
+    } else {
+      this.yarnInstall(deps, {dev: true});
+    }
   }
 };
