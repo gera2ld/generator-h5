@@ -18,6 +18,8 @@ Usage
 ``` sh
 # Make sure yeoman and yarn is installed
 $ npm i yo -g
+
+# OPTIONAL: You may also install yarn
 $ npm i yarn -g
 
 # Initialize your project

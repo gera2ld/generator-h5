@@ -114,10 +114,12 @@ gulp.task('lint', () => {
   .pipe(eslint.failAfterError());
 });
 
+gulp.task('watch-js', ['js'], reload);
+gulp.task('watch-html', ['html'], reload);
 gulp.task('watch', ['default'], () => {
   gulp.watch('src/**/*.css', ['css']);
-  gulp.watch('src/**/*.js', ['js']).on('change', browserSync.reload);
-  gulp.watch('src/**/*.html', ['html']).on('change', browserSync.reload);
+  gulp.watch('src/**/*.js', ['watch-js']);
+  gulp.watch('src/**/*.html', ['watch-html']);
 });
 
 gulp.task('browser-sync', ['watch'], () => {
@@ -132,4 +134,8 @@ gulp.task('browser-sync', ['watch'], () => {
 function logError(err) {
   gutil.log(err.toString());
   return this.emit('end');
+}
+function reload(done) {
+  browserSync.reload();
+  done && done();
 }
