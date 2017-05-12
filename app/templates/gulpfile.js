@@ -4,24 +4,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const plumber = require('gulp-plumber');
 const eslint = require('gulp-eslint');
-const uglify = require('gulp-uglify');
-<% if (es6) { -%>
 const rollup = require('gulp-rollup');
-const rollupOptions = {
-  format: 'iife',
-  plugins: [
-    require('rollup-plugin-babel')({
-      runtimeHelpers: true,
-      exclude: 'node_modules/**',
-    }),
-    require('rollup-plugin-node-resolve')(),
-    require('rollup-plugin-commonjs')({
-      include: 'node_modules/**',
-    }),
-  ],
-  allowRealFiles: true,
-};
-<% } -%>
 const minifyHtml = require('gulp-htmlmin');
 const postcss = require('gulp-postcss');
 const precss = require('precss');
@@ -38,6 +21,33 @@ const readdir = promisify(fs.readdir);
 
 const DIST = 'dist';
 const IS_PROD = process.env.NODE_ENV === 'production';
+const rollupOptions = {
+  format: 'iife',
+  plugins: [
+    require('rollup-plugin-babel')({
+      runtimeHelpers: true,
+      exclude: 'node_modules/**',
+      presets: [
+        [
+          'env',
+          {
+            modules: false,
+            targets: {
+              browsers: ['last 2 versions', 'safari >= 7'],
+            },
+          },
+        ],
+      ].filter(Boolean),
+      plugins: ['transform-runtime'],
+    }),
+    require('rollup-plugin-node-resolve')(),
+    require('rollup-plugin-commonjs')({
+      include: 'node_modules/**',
+    }),
+    IS_PROD && require('rollup-plugin-babili')(),
+  ].filter(Boolean),
+  allowRealFiles: true,
+};
 
 // INLINE mode will inline all CSS and JavaScript, you should use it when
 // CSS and JavaScript sizes are both small.
@@ -64,7 +74,6 @@ gulp.task('css', () => {
 
 gulp.task('js', () => {
   let stream = gulp.src(<% if (multiplePages) { %>'src/pages/**/*.js'<% } else { %>'src/app.js'<% } %>, {base: 'src'});
-<% if (es6) { -%>
   stream = stream.pipe(rollup(Object.assign({
     entry: <%
     if (multiplePages) {
@@ -73,9 +82,6 @@ gulp.task('js', () => {
       %>'src/app.js'<%
     } %>,
   }, rollupOptions)));
-<% } -%>
-  if (IS_PROD) stream = stream
-  .pipe(uglify());
   stream = stream
   .pipe(assetsInjector.collect());
   if (!INLINE) stream = stream

@@ -30,11 +30,6 @@ module.exports = class Html5Generator extends Generator {
         message: 'Description of your project',
       },
       {
-        name: 'es6',
-        type: 'confirm',
-        message: 'Would you like to use ES6?',
-      },
-      {
         name: 'cssCompat',
         type: 'list',
         message: 'How many browsers would you like to support for CSS?',
@@ -68,7 +63,6 @@ module.exports = class Html5Generator extends Generator {
       this.fs.copy(`${rootFileDir}/${name}`, this.destinationPath(name.replace(/^_/, '.')));
     });
     ['package.json', 'gulpfile.js', 'browserslist', 'README.md']
-    .concat(this.state.es6 ? ['_babelrc'] : [])
     .forEach(name => {
       this.fs.copyTpl(this.templatePath(name), this.destinationPath(name.replace(/^_/, '.')), this.state);
     });
@@ -103,21 +97,17 @@ module.exports = class Html5Generator extends Generator {
       'precss',
       'autoprefixer',
       'cssnano',
-      'gulp-uglify',
       'gulp-util',
       'gulp-assets-injector',
+      'gulp-rollup',
+      'rollup-plugin-babel',
+      'rollup-plugin-node-resolve',
+      'rollup-plugin-commonjs',
+      'rollup-plugin-babili',
+      'babel-runtime',
+      'babel-preset-env',
+      'babel-plugin-transform-runtime',
     ];
-    if (this.state.es6) {
-      deps.push(...[
-        'gulp-rollup',
-        'rollup-plugin-babel',
-        'rollup-plugin-node-resolve',
-        'rollup-plugin-commonjs',
-        'babel-runtime',
-        'babel-preset-env',
-        'babel-plugin-transform-runtime',
-      ]);
-    }
     if (this.state.multiplePages) {
       deps.push(...[
         'es6-promisify',
