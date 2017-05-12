@@ -107,6 +107,8 @@ module.exports = class Html5Generator extends Generator {
       'babel-runtime',
       'babel-preset-env',
       'babel-plugin-transform-runtime',
+      'eslint-config-airbnb-base',
+      'eslint-plugin-import',
     ];
     if (this.state.multiplePages) {
       deps.push(...[
