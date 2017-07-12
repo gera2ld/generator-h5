@@ -3,6 +3,8 @@ generator-h5
 
 Yeoman generator to create an HTML5 workspace rapidly.
 
+Requires Node.js 8+.
+
 Installation
 ---
 

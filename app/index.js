@@ -60,11 +60,7 @@ module.exports = class Html5Generator extends Generator {
     fs.readdirSync(rootFileDir)
     .forEach(name => {
       if (name.startsWith('.')) return;
-      this.fs.copy(`${rootFileDir}/${name}`, this.destinationPath(name.replace(/^_/, '.')));
-    });
-    ['package.json', 'gulpfile.js', 'browserslist', 'README.md']
-    .forEach(name => {
-      this.fs.copyTpl(this.templatePath(name), this.destinationPath(name.replace(/^_/, '.')), this.state);
+      this.fs.copyTpl(`${rootFileDir}/${name}`, this.destinationPath(name.replace(/^_/, '.')), this.state);
     });
   }
 
@@ -94,6 +90,7 @@ module.exports = class Html5Generator extends Generator {
       'gulp-htmlmin',
       'gulp-plumber',
       'gulp-postcss',
+      'postcss-scss',
       'precss',
       'autoprefixer',
       'cssnano',
@@ -110,11 +107,6 @@ module.exports = class Html5Generator extends Generator {
       'eslint-config-airbnb-base',
       'eslint-plugin-import',
     ];
-    if (this.state.multiplePages) {
-      deps.push(...[
-        'es6-promisify',
-      ]);
-    }
     const res = this.spawnCommandSync('yarn', ['--version']);
     if (res.error && res.error.code === 'ENOENT') {
       this.npmInstall(deps, {saveDev: true});

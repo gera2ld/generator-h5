@@ -1,4 +1,3 @@
-const path = require('path');
 const del = require('del');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
@@ -7,16 +6,13 @@ const eslint = require('gulp-eslint');
 const rollup = require('gulp-rollup');
 const minifyHtml = require('gulp-htmlmin');
 const postcss = require('gulp-postcss');
-const precss = require('precss');
-const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano');
 const browserSync = require('browser-sync').create();
 const assetsInjector = require('gulp-assets-injector')();
 <% if (multiplePages) { -%>
 const fs = require('fs');
-const promisify = require('es6-promisify');
+const util = require('util');
 
-const readdir = promisify(fs.readdir);
+const readdir = util.promisify(fs.readdir);
 <% } -%>
 
 const DIST = 'dist';
@@ -33,6 +29,8 @@ const rollupOptions = {
           {
             modules: false,
             targets: {
+              // Does not support browserslist config file yet
+              // see https://github.com/babel/babel-preset-env/pull/161
               browsers: ['last 2 versions', 'safari >= 7'],
             },
           },
@@ -60,10 +58,10 @@ gulp.task('css', () => {
   let stream = gulp.src(<% if (multiplePages) { %>'src/pages/*/style.css'<% } else { %>'src/style.css'<% } %>, {base: 'src'})
   .pipe(plumber(logError))
   .pipe(postcss([
-    precss(),
-    autoprefixer(),
-    IS_PROD && cssnano(),
-  ].filter(Boolean)))
+    require('precss')(),
+    require('autoprefixer')(),
+    IS_PROD && require('cssnano')(),
+  ].filter(Boolean), { parser: require('postcss-scss') }))
   .pipe(assetsInjector.collect());
   if (!INLINE) stream = stream
   .pipe(gulp.dest(DIST));
