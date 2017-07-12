@@ -1,14 +1,12 @@
 # See https://github.com/ai/browserslist#config-file for details
 
 # default list
-<%- (cssCompat === 'ie9' ? utils.commentLines : utils.identity)(`\
-> 1%
-last 2 versions
-Firefox ESR
+<%- (target ? utils.commentLines : utils.identity)(`\
+last 2 Chrome versions
 `) -%>
 
 # compatible with older browsers
-<%- (cssCompat === 'ie9' ? utils.identity : utils.commentLines)(`\
+<%- (target ? utils.identity : utils.commentLines)(`\
 Android 2.3
 Android >= 4
 Chrome >= 35

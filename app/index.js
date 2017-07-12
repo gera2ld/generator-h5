@@ -30,7 +30,7 @@ module.exports = class Html5Generator extends Generator {
         message: 'Description of your project',
       },
       {
-        name: 'cssCompat',
+        name: 'target',
         type: 'list',
         message: 'How many browsers would you like to support for CSS?',
         choices: [{
@@ -38,7 +38,7 @@ module.exports = class Html5Generator extends Generator {
           value: '',
         }, {
           name: 'include older browsers since IE 9',
-          value: 'ie9',
+          value: 'es5',
         }],
       },
       {

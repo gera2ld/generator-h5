@@ -28,11 +28,13 @@ const rollupOptions = {
           'env',
           {
             modules: false,
+            // Does not support browserslist config file yet
+            // see https://github.com/babel/babel-preset-env/pull/161
+<% if (!target) { -%>
             targets: {
-              // Does not support browserslist config file yet
-              // see https://github.com/babel/babel-preset-env/pull/161
-              browsers: ['last 2 versions', 'safari >= 7'],
+              browsers: ['last 2 Chrome versions'],
             },
+<% } -%>
           },
         ],
       ].filter(Boolean),
