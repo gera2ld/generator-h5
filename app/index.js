@@ -47,6 +47,12 @@ module.exports = class Html5Generator extends Generator {
         message: 'Would you like to develop multiple pages?',
         default: false,
       },
+      {
+        name: 'inline',
+        type: 'confirm',
+        message: 'Would you like to inline JavaScript and CSS in production mode?',
+        default: true,
+      },
     ])
     .then(answers => {
       this.state = Object.assign({

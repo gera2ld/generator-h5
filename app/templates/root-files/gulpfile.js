@@ -17,6 +17,7 @@ const readdir = util.promisify(fs.readdir);
 
 const DIST = 'dist';
 const IS_PROD = process.env.NODE_ENV === 'production';
+const INLINE = <%= inline %>;
 const rollupOptions = {
   format: 'iife',
   plugins: [
@@ -48,11 +49,6 @@ const rollupOptions = {
   ].filter(Boolean),
   allowRealFiles: true,
 };
-
-// INLINE mode will inline all CSS and JavaScript, you should use it when
-// CSS and JavaScript sizes are both small.
-// Known issue: INLINE mode will be broken if script has string `</script>` in it.
-const INLINE = false;
 
 gulp.task('clean', () => del(DIST));
 
