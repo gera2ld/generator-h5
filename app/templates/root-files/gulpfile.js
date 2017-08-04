@@ -17,7 +17,7 @@ const readdir = util.promisify(fs.readdir);
 
 const DIST = 'dist';
 const IS_PROD = process.env.NODE_ENV === 'production';
-const INLINE = <%= inline %>;
+const INLINE = <%= inline %> && IS_PROD;  // won't watch in dev mode
 const rollupOptions = {
   format: 'iife',
   plugins: [
@@ -39,7 +39,11 @@ const rollupOptions = {
           },
         ],
       ].filter(Boolean),
-      plugins: ['transform-runtime'],
+      plugins: [
+        ['transform-runtime', {
+          polyfill: false,
+        }],
+      ],
     }),
     require('rollup-plugin-node-resolve')(),
     require('rollup-plugin-commonjs')({
