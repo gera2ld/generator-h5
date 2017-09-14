@@ -49,7 +49,9 @@ const rollupOptions = {
     require('rollup-plugin-commonjs')({
       include: 'node_modules/**',
     }),
-    IS_PROD && require('rollup-plugin-babili')(),
+    IS_PROD && require('rollup-plugin-babel-minify')({
+      comments: false,
+    }),
   ].filter(Boolean),
   allowRealFiles: true,
 };
