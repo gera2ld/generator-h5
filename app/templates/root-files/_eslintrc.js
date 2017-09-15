@@ -4,11 +4,13 @@ module.exports = {
     browser: true,
   },
   rules: {
+    'no-param-reassign': ['error', { props: false }],
+    'consistent-return': 'off',
     'no-use-before-define': ['error', 'nofunc'],
-    'no-mixed-operators': 0,
-    'arrow-parens': 0,
-    'no-plusplus': 0,
-    'no-param-reassign': 0,
-    'consistent-return': 0,
+    'no-mixed-operators': ['error', { allowSamePrecedence: true }],
+    'no-bitwise': ['error', { int32Hint: true }],
+    'arrow-parens': ['error', 'as-needed'],
+    'prefer-promise-reject-errors': 'off',
+    'prefer-destructuring': ['error', { array: false }],
   },
 };
