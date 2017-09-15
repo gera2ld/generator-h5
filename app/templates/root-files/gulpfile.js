@@ -77,7 +77,7 @@ gulp.task('css', () => {
 gulp.task('js', () => {
   let stream = gulp.src(<% if (multiplePages) { %>'src/pages/**/*.js'<% } else { %>'src/app.js'<% } %>, {base: 'src'});
   stream = stream.pipe(rollup(Object.assign({
-    entry: <%
+    input: <%
     if (multiplePages) {
       %>readdir('src/pages').then(names => names.map(name => `src/pages/${name}/app.js`))<%
     } else {
