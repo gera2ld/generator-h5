@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "gulp browser-sync",
     "prebuild": "gulp clean",
-    "build": "cross-env NODE_ENV=production gulp",
+    "build": "cross-env NODE_ENV=production gulp build",
     "lint": "gulp lint"
   }
 }

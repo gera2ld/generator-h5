@@ -42,12 +42,6 @@ module.exports = class Html5Generator extends Generator {
         }],
       },
       {
-        name: 'multiplePages',
-        type: 'confirm',
-        message: 'Would you like to develop multiple pages?',
-        default: false,
-      },
-      {
         name: 'inline',
         type: 'confirm',
         message: 'Would you like to inline JavaScript and CSS in production mode?',
@@ -61,29 +55,23 @@ module.exports = class Html5Generator extends Generator {
     });
   }
 
-  rootFiles() {
+  templates() {
     const rootFileDir = this.templatePath('root-files');
     fs.readdirSync(rootFileDir)
     .forEach(name => {
       if (name.startsWith('.')) return;
       this.fs.copyTpl(`${rootFileDir}/${name}`, this.destinationPath(name.replace(/^_/, '.')), this.state);
     });
+    const scripts = this.templatePath('scripts');
+    fs.readdirSync(scripts)
+    .forEach(name => {
+      if (name.startsWith('.')) return;
+      this.fs.copyTpl(`${scripts}/${name}`, this.destinationPath(`scripts/${name}`), this.state);
+    });
   }
 
   app() {
-    if (this.state.multiplePages) {
-      this.fs.copy(this.templatePath('page/contents.html'), this.destinationPath('src/index.html'));
-      ['index.html', 'app.js', 'style.css']
-      .forEach(name => {
-        this.fs.copyTpl(this.templatePath(`page/${name}`), this.destinationPath(`src/pages/home/${name}`), this.state);
-      });
-    } else {
-      ['index.html', 'app.js', 'style.css']
-      .forEach(name => {
-        this.fs.copyTpl(this.templatePath(`page/${name}`), this.destinationPath(`src/${name}`), this.state);
-      });
-    }
-    this.fs.copy(this.templatePath('assets'), this.destinationPath('src/assets'));
+    this.fs.copy(this.templatePath('src'), this.destinationPath('src'));
   }
 
   install() {
@@ -92,26 +80,28 @@ module.exports = class Html5Generator extends Generator {
       'cross-env',
       'del',
       'gulp',
-      'gulp-eslint',
-      'gulp-htmlmin',
-      'gulp-plumber',
-      'gulp-postcss',
+      'gulp-util',
+      'eslint',
+      'babel-eslint',
+      'eslint-config-airbnb-base',
+      'eslint-plugin-import',
+      'webpack',
       'postcss-scss',
       'precss',
       'autoprefixer',
-      'cssnano',
-      'gulp-util',
-      'gulp-assets-injector',
-      'gulp-rollup',
-      'rollup-plugin-babel',
-      'rollup-plugin-node-resolve',
-      'rollup-plugin-commonjs',
-      'rollup-plugin-babel-minify',
       'babel-runtime',
       'babel-preset-env',
       'babel-plugin-transform-runtime',
-      'eslint-config-airbnb-base',
-      'eslint-plugin-import',
+      'extract-text-webpack-plugin',
+      'html-webpack-plugin',
+      'html-webpack-inline-source-plugin',
+      'babel-minify-webpack-plugin',
+      'babel-loader',
+      'style-loader',
+      'css-loader',
+      'postcss-loader',
+      'url-loader',
+      'file-loader',
     ];
     const res = this.spawnCommandSync('yarn', ['--version']);
     if (res.error && res.error.code === 'ENOENT') {
