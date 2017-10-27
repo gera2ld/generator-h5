@@ -9,11 +9,16 @@ const DIST = 'dist';
 
 gulp.task('clean', () => del(DIST));
 
-gulp.task('js-dev', () => {
+gulp.task('js-dev', cb => {
+  let callback = cb;
   webpack(webpackConfig)
   .watch({}, (...args) => {
     webpackCallback(...args);
     reload();
+    if (callback) {
+      callback();
+      callback = null;
+    }
   });
 });
 gulp.task('js-prd', cb => {
