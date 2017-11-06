@@ -33,6 +33,7 @@ gulp.task('build', ['js-prd']);
 gulp.task('browser-sync', ['js-dev'], () => {
   browserSync.init({
     notify: false,
+    open: false,
     server: {
       baseDir: DIST,
     },
