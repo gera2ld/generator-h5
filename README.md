@@ -1,9 +1,15 @@
 generator-h5
 ===
 
-Yeoman generator to create an HTML5 workspace rapidly.
+Yeoman generator to create a workspace for static pages rapidly.
 
 Requires Node.js 8+.
+
+Features
+---
+- Latest ECMAScript features
+- Multiple pages support via a config file
+- Vue support
 
 Installation
 ---
