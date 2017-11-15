@@ -28,9 +28,18 @@ gulp.task('js-prd', cb => {
   });
 });
 
+gulp.task('public', () => {
+  return gulp.src('src/public/**', { base: 'src' })
+  .pipe(gulp.dest(DIST));
+});
+
+gulp.task('watch', ['public'], () => {
+  gulp.watch('src/public/**', ['public']);
+});
+
 gulp.task('build', ['js-prd']);
 
-gulp.task('browser-sync', ['js-dev'], () => {
+gulp.task('browser-sync', ['js-dev', 'watch'], () => {
   browserSync.init({
     notify: false,
     open: false,
