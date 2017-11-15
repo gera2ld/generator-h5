@@ -15,6 +15,14 @@ const utils = {
   },
 };
 
+function copyDir(gen, src, dist) {
+  fs.readdirSync(src)
+  .forEach(name => {
+    if (name.startsWith('.')) return;
+    gen.fs.copyTpl(`${src}/${name}`, gen.destinationPath(`${dist}/${name.replace(/^_/, '.')}`), gen.state);
+  });
+}
+
 module.exports = class Html5Generator extends Generator {
   prompting() {
     return this.prompt([
@@ -45,7 +53,13 @@ module.exports = class Html5Generator extends Generator {
         name: 'inline',
         type: 'confirm',
         message: 'Would you like to inline JavaScript and CSS in production mode?',
-        default: true,
+        default: false,
+      },
+      {
+        name: 'vue',
+        type: 'confirm',
+        message: 'Would you like to use Vue.js?',
+        default: false,
       },
     ])
     .then(answers => {
@@ -56,18 +70,9 @@ module.exports = class Html5Generator extends Generator {
   }
 
   templates() {
-    const rootFileDir = this.templatePath('root-files');
-    fs.readdirSync(rootFileDir)
-    .forEach(name => {
-      if (name.startsWith('.')) return;
-      this.fs.copyTpl(`${rootFileDir}/${name}`, this.destinationPath(name.replace(/^_/, '.')), this.state);
-    });
-    const scripts = this.templatePath('scripts');
-    fs.readdirSync(scripts)
-    .forEach(name => {
-      if (name.startsWith('.')) return;
-      this.fs.copyTpl(`${scripts}/${name}`, this.destinationPath(`scripts/${name}`), this.state);
-    });
+    copyDir(this, this.templatePath('_root'), '.');
+    copyDir(this, this.templatePath('scripts'), 'scripts');
+    if (this.state.vue) copyDir(this, this.templatePath('_vue_scripts'), 'scripts');
   }
 
   app() {
@@ -75,7 +80,7 @@ module.exports = class Html5Generator extends Generator {
   }
 
   install() {
-    const deps = [
+    const devDeps = [
       'browser-sync',
       'cross-env',
       'del',
@@ -84,6 +89,7 @@ module.exports = class Html5Generator extends Generator {
       'eslint',
       'babel-eslint',
       'eslint-config-airbnb-base',
+      'eslint-import-resolver-webpack',
       'eslint-plugin-import',
       'webpack',
       'postcss-scss',
@@ -103,11 +109,25 @@ module.exports = class Html5Generator extends Generator {
       'url-loader',
       'file-loader',
     ];
+    const deps = [];
+    if (this.state.vue) {
+      devDeps.push(
+        'vue-loader',
+        'vue-style-loader',
+        'vue-template-compiler',
+        'eslint-plugin-html',
+      );
+      deps.push(
+        'vue',
+      );
+    }
     const res = this.spawnCommandSync('yarn', ['--version']);
     if (res.error && res.error.code === 'ENOENT') {
-      this.npmInstall(deps, {saveDev: true});
+      this.npmInstall(devDeps, {saveDev: true});
+      this.npmInstall(deps);
     } else {
-      this.yarnInstall(deps, {dev: true});
+      this.yarnInstall(devDeps, {dev: true});
+      this.yarnInstall(deps);
     }
   }
 };

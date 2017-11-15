@@ -4,7 +4,28 @@ module.exports = {
   env: {
     browser: true,
   },
+<% if (vue) { -%>
+  // required to lint *.vue files
+  plugins: [
+    'html',
+  ],
+<% } -%>
+  // check if imports actually resolve
+  'settings': {
+    'import/resolver': {
+      'webpack': {
+        'config': 'scripts/webpack.conf.js'
+      }
+    }
+  },
   rules: {
+    // don't require .vue extension when importing
+    'import/extensions': ['error', 'always', {
+      js: 'never',
+<% if (vue) { -%>
+      vue: 'never',
+<% } -%>
+    }],
     'no-param-reassign': ['error', { props: false }],
     'consistent-return': 'off',
     'no-use-before-define': ['error', 'nofunc'],

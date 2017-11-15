@@ -10,5 +10,8 @@
     "prebuild": "gulp clean",
     "build": "cross-env NODE_ENV=production gulp build",
     "lint": "gulp lint"
+  },
+  "engines": {
+    "node": ">=8"
   }
 }
