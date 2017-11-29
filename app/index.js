@@ -61,6 +61,12 @@ module.exports = class Html5Generator extends Generator {
         message: 'Would you like to use Vue.js?',
         default: false,
       },
+      {
+        name: 'react',
+        type: 'confirm',
+        message: 'Would you like to use React.js?',
+        default: false,
+      },
     ])
     .then(answers => {
       this.state = Object.assign({
@@ -88,7 +94,6 @@ module.exports = class Html5Generator extends Generator {
       'gulp-util',
       'eslint',
       'babel-eslint',
-      'eslint-config-airbnb-base',
       'eslint-import-resolver-webpack',
       'eslint-plugin-import',
       'webpack',
@@ -97,6 +102,7 @@ module.exports = class Html5Generator extends Generator {
       'autoprefixer',
       'babel-runtime',
       'babel-preset-env',
+      'babel-preset-stage-2',
       'babel-plugin-transform-runtime',
       'extract-text-webpack-plugin',
       'html-webpack-plugin',
@@ -119,6 +125,22 @@ module.exports = class Html5Generator extends Generator {
       );
       deps.push(
         'vue',
+      );
+    }
+    if (this.state.react) {
+      devDeps.push(
+        'babel-preset-react',
+        'eslint-config-airbnb',
+        'eslint-plugin-react',
+        'eslint-plugin-jsx-a11y',
+      );
+      deps.push(
+        'react',
+        'react-dom',
+      );
+    } else {
+      devDeps.push(
+        'eslint-config-airbnb-base',
       );
     }
     const res = this.spawnCommandSync('yarn', ['--version']);

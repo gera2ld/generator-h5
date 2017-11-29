@@ -1,15 +1,17 @@
 module.exports = {
   parser: 'babel-eslint',
-  extends: 'airbnb-base',
+  extends: [
+    'airbnb<% if (!react) { %>-base<% } %>',
+  ],
   env: {
     browser: true,
   },
-<% if (vue) { -%>
-  // required to lint *.vue files
   plugins: [
+<% if (vue) { -%>
+    // required to lint *.vue files
     'html',
-  ],
 <% } -%>
+  ],
   // check if imports actually resolve
   'settings': {
     'import/resolver': {
@@ -37,5 +39,8 @@ module.exports = {
     'no-console': ['warn', {
       allow: ['error', 'warn', 'info'],
     }],
+<% if (react) { -%>
+    'react/jsx-filename-extension': 'off',
+<% } -%>
   },
 };

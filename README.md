@@ -3,13 +3,14 @@ generator-h5
 
 Yeoman generator to create a workspace for static pages rapidly.
 
-Requires Node.js 8+.
+Requires Node.js v8.0+.
 
 Features
 ---
 - Latest ECMAScript features
 - Multiple pages support via a config file
-- Vue support
+- Vue.js support
+- React.js support
 
 Installation
 ---
