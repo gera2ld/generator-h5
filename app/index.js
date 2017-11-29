@@ -78,11 +78,13 @@ module.exports = class Html5Generator extends Generator {
   templates() {
     copyDir(this, this.templatePath('_root'), '.');
     copyDir(this, this.templatePath('scripts'), 'scripts');
-    if (this.state.vue) copyDir(this, this.templatePath('_vue_scripts'), 'scripts');
+    if (this.state.vue) copyDir(this, this.templatePath('_vue/scripts'), 'scripts');
   }
 
   app() {
     this.fs.copy(this.templatePath('src'), this.destinationPath('src'));
+    if (this.state.vue) this.fs.copy(this.templatePath('_vue/demo'), this.destinationPath('src/demo-vue'));
+    if (this.state.react) this.fs.copy(this.templatePath('_react/demo'), this.destinationPath('src/demo-react'));
   }
 
   install() {
