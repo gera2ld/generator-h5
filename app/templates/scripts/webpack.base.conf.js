@@ -1,12 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
+// const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 <% if (vue) { -%>
 const vueLoaderConfig = require('./vue-loader.conf');
 <% } -%>
 const { IS_DEV, styleRule } = require('./utils');
 
 const DIST = 'dist';
+// const extractSVG = !IS_DEV;
 
 const definePlugin = new webpack.DefinePlugin({
   'process.env': {
@@ -30,7 +32,7 @@ module.exports = {
     modules: [resolve('node_modules')],
     extensions: ['.js'<% if (vue) { %>, '.vue'<% } %>],
     alias: {
-      src: resolve('src'),
+      '#': resolve('src'),
     }
   },
   node: {
@@ -53,16 +55,27 @@ module.exports = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test')],
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000
+            limit: 10000,
           },
         }],
+        exclude: [resolve('src/resources/icons')],
+      },
+      {
+        test: /\.svg$/,
+        use: [{
+          loader: 'svg-sprite-loader',
+          options: {
+            // extract: extractSVG,
+          },
+        }],
+        include: [resolve('src/resources/icons')],
       },
 <% if (vue) { -%>
       styleRule({
@@ -93,8 +106,7 @@ module.exports = {
   devtool: IS_DEV ? '#inline-source-map' : false,
   plugins: [
     definePlugin,
-    !IS_DEV && new MinifyPlugin({
-      builtIns: false,
-    }),
+    !IS_DEV && new MinifyPlugin(),
+    // extractSVG && new SpriteLoaderPlugin(),
   ].filter(Boolean),
 };

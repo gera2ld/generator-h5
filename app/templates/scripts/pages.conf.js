@@ -6,14 +6,14 @@
 
 module.exports = {
   index: {
-    entry: 'src/index',
+    entry: './src/index',
     html: {
       title: 'Hello, world',
     },
   },
 <% if (vue) { -%>
   'demo-vue': {
-    entry: 'src/demo-vue',
+    entry: './src/demo-vue',
     html: {
       title: 'Vue demo',
     },
@@ -21,7 +21,7 @@ module.exports = {
 <% } -%>
 <% if (react) { -%>
   'demo-react': {
-    entry: 'src/demo-react',
+    entry: './src/demo-react',
     html: {
       title: 'React demo',
     },

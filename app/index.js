@@ -116,6 +116,7 @@ module.exports = class Html5Generator extends Generator {
       'postcss-loader',
       'url-loader',
       'file-loader',
+      'svg-sprite-loader',
     ];
     const deps = [];
     if (this.state.vue) {
