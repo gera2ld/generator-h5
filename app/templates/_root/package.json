@@ -9,7 +9,9 @@
     "dev": "gulp browser-sync",
     "prebuild": "gulp clean",
     "build": "cross-env NODE_ENV=production gulp build",
-    "lint": "gulp lint"
+    "lint": "eslint --ext .js,.vue .",
+    "svgo": "svgo --config .svgo.yml src/resources/icons",
+    "prepush": "npm run lint"
   },
   "engines": {
     "node": ">=8"

@@ -117,6 +117,7 @@ module.exports = class Html5Generator extends Generator {
       'url-loader',
       'file-loader',
       'svg-sprite-loader',
+      'husky',
     ];
     const deps = [];
     if (this.state.vue) {
