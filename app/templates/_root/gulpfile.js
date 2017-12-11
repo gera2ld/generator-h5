@@ -37,7 +37,7 @@ gulp.task('watch', ['public'], () => {
   gulp.watch('src/public/**', ['public']);
 });
 
-gulp.task('build', ['js-prd']);
+gulp.task('build', ['public', 'js-prd']);
 
 gulp.task('browser-sync', ['js-dev', 'watch'], () => {
   browserSync.init({
