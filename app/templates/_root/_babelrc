@@ -1,19 +1,12 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/env", {
       "modules": false,
-<% if (!target) { -%>
-      "targets": {
-        "browsers": ["last 2 chrome versions"]
-      },
-<% } -%>
+      "useBuiltIns": "usage",
     }],
-    "stage-2",
+    "@babel/stage-2",
 <% if (react) { -%>
-    "react"
+    "@babel/react"
 <% } -%>
   ],
-  "plugins": [
-    ["transform-runtime", { "polyfill": false }]
-  ]
 }

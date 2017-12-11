@@ -102,15 +102,10 @@ module.exports = class Html5Generator extends Generator {
       'postcss-scss',
       'precss',
       'autoprefixer',
-      'babel-runtime',
-      'babel-preset-env',
-      'babel-preset-stage-2',
-      'babel-plugin-transform-runtime',
       'extract-text-webpack-plugin',
       'html-webpack-plugin',
       'html-webpack-inline-source-plugin',
       'babel-minify-webpack-plugin',
-      'babel-loader',
       'style-loader',
       'css-loader',
       'postcss-loader',
@@ -118,8 +113,15 @@ module.exports = class Html5Generator extends Generator {
       'file-loader',
       'svg-sprite-loader',
       'husky',
+      // babel
+      'babel-loader@8.0.0-beta.0',
+      '@babel/core',
+      '@babel/preset-env',
+      '@babel/preset-stage-2',
     ];
-    const deps = [];
+    const deps = [
+      '@babel/runtime',
+    ];
     if (this.state.vue) {
       devDeps.push(
         'vue-loader',
@@ -133,7 +135,7 @@ module.exports = class Html5Generator extends Generator {
     }
     if (this.state.react) {
       devDeps.push(
-        'babel-preset-react',
+        '@babel/preset-react',
         'eslint-config-airbnb',
         'eslint-plugin-react',
         'eslint-plugin-jsx-a11y',
