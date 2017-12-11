@@ -12,6 +12,6 @@
   "author": "Gerald <i@gerald.top>",
   "license": "ISC",
   "dependencies": {
-    "yeoman-generator": "^1.1.1"
+    "yeoman-generator": "^2.0.1"
   }
 }
