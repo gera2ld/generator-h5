@@ -1,75 +1,82 @@
-const del = require('del');
 const gulp = require('gulp');
-const gutil = require('gulp-util');
+const del = require('del');
+const log = require('fancy-log');
 const webpack = require('webpack');
 const browserSync = require('browser-sync').create();
 const webpackConfig = require('./scripts/webpack.conf');
 
 const DIST = 'dist';
 
-gulp.task('clean', () => del(DIST));
+function clean() {
+  return del(DIST);
+}
 
-gulp.task('js-dev', cb => {
-  let callback = cb;
+function jsDev(done) {
+  let firstRun = true;
   webpack(webpackConfig)
   .watch({}, (...args) => {
     webpackCallback(...args);
     reload();
-    if (callback) {
-      callback();
-      callback = null;
+    if (firstRun) {
+      firstRun = false;
+      done();
     }
   });
-});
-gulp.task('js-prd', cb => {
+}
+
+function jsProd(done) {
   webpack(webpackConfig, (...args) => {
     webpackCallback(...args);
-    cb();
+    done();
   });
-});
+}
 
-gulp.task('public', () => {
-  return gulp.src('src/public/**', { base: 'src' })
+function public() {
+  return gulp.src('src/public/**', {
+    base: 'src',
+    since: gulp.lastRun(public),
+  })
   .pipe(gulp.dest(DIST));
-});
+}
 
-gulp.task('watch', ['public'], () => {
-  gulp.watch('src/public/**', ['public']);
-});
+function watch() {
+  gulp.watch('src/public/**', public);
+}
 
-gulp.task('build', ['public', 'js-prd']);
-
-gulp.task('browser-sync', ['js-dev', 'watch'], () => {
+function initBrowserSync(done) {
   browserSync.init({
     notify: false,
     open: false,
     server: {
       baseDir: DIST,
     },
-  });
-});
+  }, () => done());
+}
 
-function reload(done) {
+function reload() {
   browserSync.reload();
-  done && done();
 }
 
 function webpackCallback(err, stats) {
   if (err) {
-    gutil.log('[FATAL]', err);
+    log('[FATAL]', err);
     return;
   }
   if (stats.hasErrors()) {
-    gutil.log('[ERROR] webpack compilation failed\n', stats.toJson().errors.join('\n'));
+    log('[ERROR] webpack compilation failed\n', stats.toJson().errors.join('\n'));
     return;
   }
   if (stats.hasWarnings()) {
-    gutil.log('[WARNING] webpack compilation has warnings\n', stats.toJson().warnings.join('\n'));
+    log('[WARNING] webpack compilation has warnings\n', stats.toJson().warnings.join('\n'));
   }
   (Array.isArray(stats.stats) ? stats.stats : [stats])
   .forEach(stat => {
     const timeCost = (stat.endTime - stat.startTime) / 1000;
     const chunks = Object.keys(stat.compilation.namedChunks).join(' ');
-    gutil.log(`Webpack built: [${timeCost.toFixed(3)}s] ${chunks}`);
+    log(`Webpack built: [${timeCost.toFixed(3)}s] ${chunks}`);
   });
 }
+
+exports.clean = clean;
+exports.build = gulp.parallel(public, jsProd);
+exports.browser = gulp.series(gulp.parallel(public, jsDev), initBrowserSync, watch);
