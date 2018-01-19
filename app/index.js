@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('mz/fs');
 const Generator = require('yeoman-generator');
 
 const utils = {
@@ -15,27 +15,32 @@ const utils = {
   },
 };
 
-function copyDir(gen, src, dist) {
-  fs.readdirSync(src)
-  .forEach(name => {
+async function copyDir(gen, src, dist) {
+  const files = await fs.readdir(src);
+  files.forEach(name => {
     if (name.startsWith('.')) return;
     gen.fs.copyTpl(`${src}/${name}`, gen.destinationPath(`${dist}/${name.replace(/^_/, '.')}`), gen.state);
   });
 }
 
 module.exports = class Html5Generator extends Generator {
-  prompting() {
-    return this.prompt([
+  async prompting() {
+    let pkg;
+    try {
+      pkg = JSON.parse(await fs.readFile('package.json', 'utf8'));
+      delete pkg.scripts;
+      delete pkg.dependencies;
+      delete pkg.devDependencies;
+    } catch (err) {
+      // ignore
+    }
+    pkg = pkg || {};
+    const answers = await this.prompt([
       {
         name: 'name',
         type: 'input',
         message: 'Your project name',
-        default: this.appname,
-      },
-      {
-        name: 'description',
-        type: 'input',
-        message: 'Description of your project',
+        default: pkg.name || this.appname,
       },
       {
         name: 'target',
@@ -67,18 +72,22 @@ module.exports = class Html5Generator extends Generator {
         message: 'Would you like to use React.js?',
         default: false,
       },
-    ])
-    .then(answers => {
-      this.state = Object.assign({
-        utils,
-      }, answers);
-    });
+    ]);
+    this.state = Object.assign({
+      pkg,
+      utils,
+    }, answers);
   }
 
-  templates() {
-    copyDir(this, this.templatePath('_root'), '.');
-    copyDir(this, this.templatePath('scripts'), 'scripts');
-    if (this.state.vue) copyDir(this, this.templatePath('_vue/scripts'), 'scripts');
+  async templates() {
+    await Promise.all([
+      copyDir(this, this.templatePath('_root'), '.'),
+      copyDir(this, this.templatePath('scripts'), 'scripts'),
+      this.state.vue && copyDir(this, this.templatePath('_vue/scripts'), 'scripts'),
+    ]);
+    this.fs.extendJSON(this.destinationPath('package.json'), Object.assign({
+      name: this.state.name.replace(/\s+/g, '-').toLowerCase(),
+    }, this.state.pkg));
   }
 
   app() {
