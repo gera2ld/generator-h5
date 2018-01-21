@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import App from './app';
 
-const root = document.createElement('div');
-document.body.append(root);
-new Vue({
+const vm = new Vue({
   render: h => h(App),
-}).$mount(root);
+}).$mount();
+document.body.appendChild(vm.$el);
