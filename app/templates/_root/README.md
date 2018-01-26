@@ -8,17 +8,14 @@ Requires Node.js v8.0+.
 Development
 ---
 ``` sh
-$ npm run dev
+$ yarn
+$ yarn dev
 ```
+
+Pages can be added in `scripts/pages.conf.js`.
 
 Building
 ---
 ```sh
-$ npm run build
-```
-
-Lint
----
-``` sh
-$ npm run lint
+$ yarn build
 ```

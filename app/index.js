@@ -82,7 +82,7 @@ module.exports = class Html5Generator extends Generator {
   async templates() {
     await Promise.all([
       copyDir(this, this.templatePath('_root'), '.'),
-      copyDir(this, this.templatePath('scripts'), 'scripts'),
+      copyDir(this, this.templatePath('_scripts'), 'scripts'),
       this.state.vue && copyDir(this, this.templatePath('_vue/scripts'), 'scripts'),
     ]);
     this.fs.extendJSON(this.destinationPath('package.json'), Object.assign({
@@ -92,6 +92,7 @@ module.exports = class Html5Generator extends Generator {
 
   app() {
     this.fs.copy(this.templatePath('src'), this.destinationPath('src'));
+    this.fs.copy(this.templatePath('scripts'), this.destinationPath('scripts'));
     if (this.state.vue) this.fs.copy(this.templatePath('_vue/demo'), this.destinationPath('src/demo-vue'));
     if (this.state.react) this.fs.copy(this.templatePath('_react/demo'), this.destinationPath('src/demo-react'));
   }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title><%= htmlWebpackPlugin.options.title %></title>
+<% htmlWebpackPlugin.options.meta.map(([key, value]) => {
+%><meta name="<%= key %>" content="<%= value %>"><% });
+htmlWebpackPlugin.options.css.map(url => {
+%><link rel="stylesheet" href="<%= url %>"><%
+});
+htmlWebpackPlugin.options.js.map(url => {
+%><script src="<%= url %>"></script><%
+});
+%></head>
+<body>
+</body>
+</html>
