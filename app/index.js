@@ -128,8 +128,10 @@ module.exports = class Html5Generator extends Generator {
       '@babel/core',
       '@babel/preset-env',
       '@babel/preset-stage-2',
+      '@babel/plugin-transform-runtime',
     ];
     const deps = [
+      // required by @babel/plugin-transform-runtime
       '@babel/runtime',
     ];
     if (this.state.vue) {
