@@ -1,12 +1,11 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const base = require('./webpack.base.conf');
 const pages = require('./pages.conf');
-const { IS_DEV, merge } = require('./utils');
-const INLINE = <%= inline %> && !IS_DEV;
-const MINIFY = !IS_DEV && {
+const { isProd, merge } = require('./utils');
+const INLINE = <%= inline %> && isProd;
+const MINIFY = isProd && {
   collapseWhitespace: true,
   removeAttributeQuotes: true,
   removeComments: true,
@@ -52,7 +51,6 @@ targets.push(merge(base, {
   entry: entries,
   plugins: [
     ...htmlPlugins,
-    !IS_DEV && new ExtractTextPlugin('[name].css'),
     INLINE && new HtmlWebpackInlineSourcePlugin(),
   ].filter(Boolean),
 }));

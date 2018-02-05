@@ -1,20 +1,28 @@
 const path = require('path');
 const webpack = require('webpack');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 <% if (vue) { -%>
 const vueLoaderConfig = require('./vue-loader.conf');
 <% } -%>
-const { IS_DEV, styleRule } = require('./utils');
+const { isDev, isProd, styleRule } = require('./utils');
 
 const DIST = 'dist';
-// const extractSVG = !IS_DEV;
+// const extractSVG = isProd;
 
 const definePlugin = new webpack.DefinePlugin({
   'process.env': {
     NODE_ENV: JSON.stringify(process.env.NODE_ENV),
   },
 });
+
+const defaultStyleOptions = {
+<% if (vue) { -%>
+  fallback: 'vue-style-loader',
+<% } -%>
+  loaders: ['postcss-loader'],
+};
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
@@ -34,14 +42,6 @@ module.exports = {
     alias: {
       '#': resolve('src'),
     }
-  },
-  node: {
-    // css-loader requires unnecessary `Buffer` polyfill,
-    // which increases the bundle size significantly.
-    // See:
-    // - https://github.com/webpack-contrib/css-loader/issues/454
-    // - https://github.com/vuejs/vue-loader/issues/720
-    Buffer: false,
   },
   module: {
     rules: [
@@ -77,19 +77,13 @@ module.exports = {
         }],
         include: [resolve('src/resources/icons')],
       },
-<% if (vue) { -%>
-      styleRule({
-        fallback: 'vue-style-loader',
-        loaders: ['postcss-loader'],
-      }),
-<% } else { -%>
       // CSS modules: src/**/*.module.css
-      Object.assign(styleRule({ loaders: ['postcss-loader'], modules: true }), {
+      styleRule({ ...defaultStyleOptions, modules: true }, {
         test: /\.module\.css$/,
         exclude: [resolve('node_modules')],
       }),
       // normal CSS files: src/**/*.css
-      Object.assign(styleRule({ loaders: ['postcss-loader'] }), {
+      styleRule({ ...defaultStyleOptions }, {
         exclude: [
           /\.module\.css$/,
           resolve('node_modules'),
@@ -99,14 +93,14 @@ module.exports = {
       Object.assign(styleRule(), {
         include: [resolve('node_modules')],
       }),
-<% } -%>
     ],
   },
   // cheap-module-eval-source-map is faster for development
-  devtool: IS_DEV ? '#inline-source-map' : false,
+  devtool: isDev ? '#inline-source-map' : false,
   plugins: [
     definePlugin,
-    !IS_DEV && new MinifyPlugin(),
+    isProd && new MinifyPlugin(),
+    isProd && new ExtractTextPlugin('[name].css'),
     // extractSVG && new SpriteLoaderPlugin(),
   ].filter(Boolean),
 };

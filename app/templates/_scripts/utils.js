@@ -1,14 +1,16 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-const IS_DEV = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === 'development';
+const isProd = process.env.NODE_ENV === 'production';
 
-function styleLoader({
-  loaders = [],
-  extract = !IS_DEV,
-  minimize = !IS_DEV,
-  fallback = 'style-loader',
-  modules = false,
-} = {}) {
+function styleLoader(options) {
+  const {
+    loaders = [],
+    extract = isProd,
+    minimize = isProd,
+    fallback = 'style-loader',
+    modules = false,
+  } = options || {};
   const cssLoader = {
     loader: 'css-loader',
     options: {
@@ -28,10 +30,11 @@ function styleLoader({
   ];
 }
 
-function styleRule(options = {}) {
+function styleRule(options, rule) {
   return {
     test: /\.css$/,
     use: styleLoader(options),
+    ...rule,
   };
 }
 
@@ -49,7 +52,8 @@ function merge(obj1, obj2, deep = true) {
   return obj;
 }
 
-exports.IS_DEV = IS_DEV;
+exports.isDev = isDev;
+exports.isProd = isProd;
 exports.styleLoader = styleLoader;
 exports.styleRule = styleRule;
 exports.merge = merge;
