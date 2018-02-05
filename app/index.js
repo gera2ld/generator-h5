@@ -85,9 +85,9 @@ module.exports = class Html5Generator extends Generator {
       copyDir(this, this.templatePath('_scripts'), 'scripts'),
       this.state.vue && copyDir(this, this.templatePath('_vue/scripts'), 'scripts'),
     ]);
-    this.fs.extendJSON(this.destinationPath('package.json'), Object.assign({
+    this.fs.extendJSON(this.destinationPath('package.json'), Object.assign({}, this.state.pkg, {
       name: this.state.name.replace(/\s+/g, '-').toLowerCase(),
-    }, this.state.pkg));
+    }));
   }
 
   app() {
