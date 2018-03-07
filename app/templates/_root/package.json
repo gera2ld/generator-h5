@@ -7,11 +7,11 @@
   "license": "ISC",
   "scripts": {
     "dev": "gulp browser",
-    "prebuild": "gulp clean",
+    "prebuild": "yarn lint && gulp clean",
     "build": "cross-env NODE_ENV=production gulp build",
     "lint": "eslint --ext .js,.vue .",
     "svgo": "svgo --config .svgo.yml src/resources/icons",
-    "prepush": "npm run lint"
+    "prepush": "yarn lint"
   },
   "engines": {
     "node": ">=8"
