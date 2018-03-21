@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 <% if (vue) { -%>
 const vueLoaderConfig = require('./vue-loader.conf');
@@ -100,7 +100,7 @@ module.exports = {
   plugins: [
     definePlugin,
     isProd && new MinifyPlugin(),
-    isProd && new ExtractTextPlugin('[name].css'),
+    isProd && new MiniCssExtractPlugin(),
     // extractSVG && new SpriteLoaderPlugin(),
   ].filter(Boolean),
 };

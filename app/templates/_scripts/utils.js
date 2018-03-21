@@ -1,4 +1,4 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
@@ -20,11 +20,8 @@ function styleLoader(options) {
       sourceMap: false,
     },
   };
-  return extract ? ExtractTextPlugin.extract({
-    fallback,
-    use: [cssLoader, ...loaders],
-  }) : [
-    fallback,
+  return [
+    extract ? MiniCssExtractPlugin.loader : fallback,
     cssLoader,
     ...loaders,
   ];

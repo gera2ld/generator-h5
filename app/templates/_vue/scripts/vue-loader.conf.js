@@ -1,6 +1,8 @@
-const { isProd } = require('./utils');
+const { isProd, styleLoader } = require('./utils');
 
 module.exports = {
-  extractCSS: isProd,
   preserveWhitespace: false,
+  loaders: {
+    css: styleLoader(),
+  },
 };

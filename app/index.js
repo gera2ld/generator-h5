@@ -112,7 +112,7 @@ module.exports = class Html5Generator extends Generator {
       'postcss-scss',
       'precss',
       'autoprefixer',
-      'extract-text-webpack-plugin',
+      'mini-css-extract-plugin',
       'html-webpack-plugin',
       'html-webpack-inline-source-plugin',
       'babel-minify-webpack-plugin',
@@ -124,7 +124,7 @@ module.exports = class Html5Generator extends Generator {
       'svg-sprite-loader',
       'husky',
       // babel
-      'babel-loader@8.0.0-beta.0',
+      'babel-loader@^8.0.0-beta',
       '@babel/core',
       '@babel/preset-env',
       '@babel/preset-stage-2',
