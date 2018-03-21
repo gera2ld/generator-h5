@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
-<% if (vue) { -%>
+<% if (frameworks.vue) { -%>
 const vueLoaderConfig = require('./vue-loader.conf');
 <% } -%>
 const { isDev, isProd, styleRule } = require('./utils');
@@ -16,9 +16,6 @@ const DIST = 'dist';
 // });
 %>
 const defaultStyleOptions = {
-<% if (vue) { -%>
-  fallback: 'vue-style-loader',
-<% } -%>
   loaders: ['postcss-loader'],
 };
 
@@ -30,21 +27,21 @@ module.exports = {
   mode: process.env.NODE_ENV,
   output: {
     path: resolve(DIST),
-    publicPath: '/',
+    publicPath: '',
     filename: '[name].js',
   },
   resolve: {
     // Tell webpack to look for peer dependencies in `node_modules`
     // when packages are linked from outside directories
     modules: [resolve('node_modules')],
-    extensions: ['.js'<% if (vue) { %>, '.vue'<% } %>],
+    extensions: ['.js'<% if (frameworks.vue) { %>, '.vue'<% } %>],
     alias: {
       '#': resolve('src'),
     },
   },
   module: {
     rules: [
-<% if (vue) { -%>
+<% if (frameworks.vue) { -%>
       {
         test: /\.vue$/,
         loader: 'vue-loader',

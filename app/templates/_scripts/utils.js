@@ -8,7 +8,7 @@ function styleLoader(options) {
     loaders = [],
     extract = isProd,
     minimize = isProd,
-    fallback = 'style-loader',
+    fallback = <%- `'${frameworks.vue ? 'vue-style-loader' : 'style-loader'}'` %>,
     modules = false,
   } = options || {};
   const cssLoader = {

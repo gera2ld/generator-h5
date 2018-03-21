@@ -5,7 +5,7 @@
       "useBuiltIns": "usage",
     }],
     "@babel/preset-stage-2",
-<% if (react) { -%>
+<% if (frameworks.react) { -%>
     "@babel/preset-react"
 <% } -%>
   ],

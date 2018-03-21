@@ -1,13 +1,13 @@
 module.exports = {
   parser: 'babel-eslint',
   extends: [
-    'airbnb<% if (!react) { %>-base<% } %>',
+    'airbnb<% if (!frameworks.react) { %>-base<% } %>',
   ],
   env: {
     browser: true,
   },
   plugins: [
-<% if (vue) { -%>
+<% if (frameworks.vue) { -%>
     // required to lint *.vue files
     'html',
 <% } -%>
@@ -23,7 +23,7 @@ module.exports = {
   rules: {
     'import/extensions': ['error', 'always', {
       js: 'never',
-<% if (vue) { -%>
+<% if (frameworks.vue) { -%>
       vue: 'never',
 <% } -%>
     }],
@@ -38,7 +38,7 @@ module.exports = {
     'no-console': ['warn', {
       allow: ['error', 'warn', 'info'],
     }],
-<% if (react) { -%>
+<% if (frameworks.react) { -%>
     'react/jsx-filename-extension': 'off',
 <% } -%>
   },

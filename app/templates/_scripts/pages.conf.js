@@ -11,7 +11,7 @@ module.exports = {
       title: 'Hello, world',
     },
   },
-<% if (vue) { -%>
+<% if (frameworks.vue) { -%>
   'demo-vue': {
     entry: './src/demo-vue',
     html: {
@@ -19,7 +19,7 @@ module.exports = {
     },
   },
 <% } -%>
-<% if (react) { -%>
+<% if (frameworks.react) { -%>
   'demo-react': {
     entry: './src/demo-react',
     html: {

@@ -61,29 +61,27 @@ module.exports = class Html5Generator extends Generator {
         default: false,
       },
       {
-        name: 'vue',
-        type: 'confirm',
-        message: 'Would you like to use Vue.js?',
-        default: false,
-      },
-      {
-        name: 'react',
-        type: 'confirm',
-        message: 'Would you like to use React.js?',
-        default: false,
+        name: 'frameworks',
+        type: 'checkbox',
+        message: 'Which frameworks would you like to enable?',
+        choices: [
+          'Vue',
+          'React',
+        ],
       },
     ]);
     this.state = Object.assign({
       pkg,
       utils,
     }, answers);
+    this.state.frameworks = this.state.frameworks.reduce((map, key) => Object.assign(map, { [key.toLowerCase()]: 1 }), {});
   }
 
   async templates() {
     await Promise.all([
       copyDir(this, this.templatePath('_root'), '.'),
       copyDir(this, this.templatePath('_scripts'), 'scripts'),
-      this.state.vue && copyDir(this, this.templatePath('_vue/scripts'), 'scripts'),
+      this.state.frameworks.vue && copyDir(this, this.templatePath('_vue/scripts'), 'scripts'),
     ]);
     this.fs.extendJSON(this.destinationPath('package.json'), Object.assign({}, this.state.pkg, {
       name: this.state.name.replace(/\s+/g, '-').toLowerCase(),
@@ -93,8 +91,8 @@ module.exports = class Html5Generator extends Generator {
   app() {
     this.fs.copy(this.templatePath('src'), this.destinationPath('src'));
     this.fs.copy(this.templatePath('scripts'), this.destinationPath('scripts'));
-    if (this.state.vue) this.fs.copy(this.templatePath('_vue/demo'), this.destinationPath('src/demo-vue'));
-    if (this.state.react) this.fs.copy(this.templatePath('_react/demo'), this.destinationPath('src/demo-react'));
+    if (this.state.frameworks.vue) this.fs.copy(this.templatePath('_vue/demo'), this.destinationPath('src/demo-vue'));
+    if (this.state.frameworks.react) this.fs.copy(this.templatePath('_react/demo'), this.destinationPath('src/demo-react'));
   }
 
   install() {
@@ -115,7 +113,6 @@ module.exports = class Html5Generator extends Generator {
       'mini-css-extract-plugin',
       'html-webpack-plugin',
       'html-webpack-inline-source-plugin',
-      'style-loader',
       'css-loader',
       'postcss-loader',
       'url-loader',
@@ -133,7 +130,7 @@ module.exports = class Html5Generator extends Generator {
       // required by @babel/plugin-transform-runtime
       '@babel/runtime',
     ];
-    if (this.state.vue) {
+    if (this.state.frameworks.vue) {
       devDeps.push(
         'vue-loader',
         'vue-style-loader',
@@ -143,8 +140,12 @@ module.exports = class Html5Generator extends Generator {
       deps.push(
         'vue',
       );
+    } else {
+      devDeps.push(
+        'style-loader',
+      );
     }
-    if (this.state.react) {
+    if (this.state.frameworks.react) {
       devDeps.push(
         '@babel/preset-react',
         'eslint-config-airbnb',
