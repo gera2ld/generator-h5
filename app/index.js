@@ -115,7 +115,6 @@ module.exports = class Html5Generator extends Generator {
       'mini-css-extract-plugin',
       'html-webpack-plugin',
       'html-webpack-inline-source-plugin',
-      'babel-minify-webpack-plugin',
       'style-loader',
       'css-loader',
       'postcss-loader',

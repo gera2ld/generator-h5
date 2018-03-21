@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 <% if (vue) { -%>
@@ -10,13 +9,12 @@ const { isDev, isProd, styleRule } = require('./utils');
 
 const DIST = 'dist';
 // const extractSVG = isProd;
-
-const definePlugin = new webpack.DefinePlugin({
-  'process.env': {
-    NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-  },
-});
-
+<%
+// const definePlugin = new webpack.DefinePlugin({
+//   'process.env': {
+//   },
+// });
+%>
 const defaultStyleOptions = {
 <% if (vue) { -%>
   fallback: 'vue-style-loader',
@@ -29,6 +27,7 @@ function resolve(dir) {
 }
 
 module.exports = {
+  mode: process.env.NODE_ENV,
   output: {
     path: resolve(DIST),
     publicPath: '/',
@@ -41,7 +40,7 @@ module.exports = {
     extensions: ['.js'<% if (vue) { %>, '.vue'<% } %>],
     alias: {
       '#': resolve('src'),
-    }
+    },
   },
   module: {
     rules: [
@@ -95,11 +94,7 @@ module.exports = {
       }),
     ],
   },
-  // cheap-module-eval-source-map is faster for development
-  devtool: isDev ? '#inline-source-map' : false,
   plugins: [
-    definePlugin,
-    isProd && new MinifyPlugin(),
     isProd && new MiniCssExtractPlugin(),
     // extractSVG && new SpriteLoaderPlugin(),
   ].filter(Boolean),
