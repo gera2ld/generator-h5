@@ -9,8 +9,8 @@ Features
 ---
 - Latest ECMAScript features
 - Multiple pages support via a config file
-- Vue.js support
-- React.js support
+- Popular frameworks support: Vue, React
+- Webpack v4 + Babel v8
 
 Installation
 ---
