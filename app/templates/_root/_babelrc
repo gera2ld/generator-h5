@@ -10,6 +10,6 @@
 <% } -%>
   ],
   "plugins": [
-    ["@babel/plugin-transform-runtime", { polyfill: false }],
+    ["@babel/plugin-transform-runtime", { "polyfill": false }],
   ],
 }
