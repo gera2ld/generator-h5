@@ -1,11 +1,10 @@
 {
-  "name": "generator-h5",
-  "version": "0.0.0",
+  "name": "@gera2ld/generator-h5",
+  "version": "0.1.0",
   "description": "Generate a project to develop HTML 5 pages",
   "files": [
     "app"
   ],
-  "main": "app/index.js",
   "keywords": [
     "yeoman-generator"
   ],
@@ -14,5 +13,6 @@
   "dependencies": {
     "mz": "^2.7.0",
     "yeoman-generator": "^2.0.1"
-  }
+  },
+  "repository": "git@github.com:gera2ld/generator-h5.git"
 }

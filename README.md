@@ -1,5 +1,7 @@
-generator-h5
+@gera2ld/generator-h5
 ===
+
+![NPM](https://img.shields.io/npm/v/@gera2ld/generator-h5.svg)
 
 Yeoman generator to create a workspace for static pages rapidly.
 
@@ -14,24 +16,24 @@ Features
 
 Installation
 ---
+It is highly recommended to use with Yarn.
 
 ``` sh
-# Clone the generator and link it to global node_modules
+$ yarn global add @gera2ld/generator-h5
+
+# You can also clone the generator and link it to global node_modules
 $ git clone https://github.com/gera2ld/generator-h5.git
-$ cd path/to/generator-h5 && npm link
+$ cd path/to/generator-h5 && yarn link
 ```
 
 Usage
 ---
 
 ``` sh
-# Make sure yeoman and yarn is installed
-$ npm i yo -g
-
-# OPTIONAL: You may also install yarn
-$ npm i yarn -g
+# Make sure yeoman is installed
+$ yarn global add yo
 
 # Initialize your project
 $ cd my-project
-$ yo h5
+$ yo @gera2ld/h5
 ```
