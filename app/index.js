@@ -118,7 +118,7 @@ module.exports = class Html5Generator extends Generator {
       'url-loader',
       'file-loader',
       'svg-sprite-loader',
-      'husky',
+      'husky@next',
       // babel
       'babel-loader@^8.0.0-beta',
       '@babel/core',
