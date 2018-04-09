@@ -18,9 +18,7 @@ const defaultTemplateOptions = {
   inlineSource: '.(js|css)$',
   minify: MINIFY,
   template: 'scripts/template.html',
-  meta: [
-    ['viewport', 'width=device-width,initial-scale=1.0'],
-  ],
+  meta: { viewport: 'width=device-width,initial-scale=1.0' },
   css: [],
   js: [],
 };

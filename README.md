@@ -13,6 +13,7 @@ Features
 - Multiple pages support via a config file
 - Popular frameworks support: Vue, React
 - Webpack v4 + Babel v7
+- Scale document elements with `rem`
 
 Installation
 ---

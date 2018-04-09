@@ -1,13 +1,14 @@
+import { createElement } from '#/common/util';
+import { scaleWidth } from '#/common/scale';
 import iconPlus from '#/resources/icons/plus.svg';
 import './style.css';
 
 function hello() {
-  const el = document.createElement('h1');
-  el.innerHTML = 'hello, world';
-  document.body.appendChild(el);
-  const div = document.createElement('div');
-  div.innerHTML = `<svg><use href="#${iconPlus.id}" /></svg>`;
-  document.body.appendChild(div);
+  const { body } = document;
+  body.appendChild(createElement('div', {
+    innerHTML: `hello, world <svg class="icon"><use href="#${iconPlus.id}" /></svg>`,
+  }));
 }
 
 hello();
+scaleWidth();

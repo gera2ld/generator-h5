@@ -4,10 +4,13 @@
   box-sizing: border-box;
 }
 
-html {
-  font-size: 50px;
-}
-
 body {
   font-size: .32rem;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -.2em;
 }
