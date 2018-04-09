@@ -41,5 +41,10 @@ module.exports = {
 <% if (frameworks.react) { -%>
     'react/jsx-filename-extension': 'off',
 <% } -%>
+<% if (!target) { -%>
+    // Turn off warnings for modern browsers
+    'no-restricted-syntax': 'off',
+    'no-await-in-loop': 'off',
+<% } -%>
   },
 };
