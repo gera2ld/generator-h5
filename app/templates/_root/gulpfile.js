@@ -31,16 +31,16 @@ function jsProd(done) {
   });
 }
 
-function public() {
+function copyPublic() {
   return gulp.src('src/public/**', {
     base: 'src',
-    since: gulp.lastRun(public),
+    since: gulp.lastRun(copyPublic),
   })
   .pipe(gulp.dest(DIST));
 }
 
 function watch() {
-  gulp.watch('src/public/**', public);
+  gulp.watch('src/public/**', copyPublic);
 }
 
 function initBrowserSync(done) {
@@ -78,5 +78,5 @@ function webpackCallback(err, stats) {
 }
 
 exports.clean = clean;
-exports.build = gulp.parallel(public, jsProd);
-exports.browser = gulp.series(gulp.parallel(public, jsDev), initBrowserSync, watch);
+exports.build = gulp.parallel(copyPublic, jsProd);
+exports.browser = gulp.series(gulp.parallel(copyPublic, jsDev), initBrowserSync, watch);

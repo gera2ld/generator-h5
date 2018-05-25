@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 <% if (frameworks.vue) { -%>
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const vueLoaderConfig = require('./vue-loader.conf');
 <% } -%>
 const { isDev, isProd, styleRule } = require('./utils');
@@ -92,6 +93,9 @@ module.exports = {
     ],
   },
   plugins: [
+<% if (frameworks.vue) { -%>
+    new VueLoaderPlugin(),
+<% } -%>
     isProd && new MiniCssExtractPlugin(),
     // extractSVG && new SpriteLoaderPlugin(),
   ].filter(Boolean),
