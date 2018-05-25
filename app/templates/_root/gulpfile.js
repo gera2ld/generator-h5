@@ -50,7 +50,7 @@ function initBrowserSync(done) {
     server: {
       baseDir: DIST,
     },
-  }, () => done());
+  }, done);
 }
 
 function reload() {
