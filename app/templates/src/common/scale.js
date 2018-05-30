@@ -1,10 +1,8 @@
-import { createElement } from './util';
-
 let support;
 
 function initSupport() {
   if (support) return;
-  const div = createElement('div');
+  const div = document.createElement('div');
   div.setAttribute('style', 'font-size:1vw');
   const vw = div.style.fontSize === '1vw';
   support = { vw };
