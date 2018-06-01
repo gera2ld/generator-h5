@@ -25,7 +25,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   output: {
     path: resolve(DIST),
     publicPath: '',
