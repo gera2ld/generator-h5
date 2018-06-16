@@ -102,7 +102,7 @@ module.exports = class Html5Generator extends Generator {
       'del',
       'gulp@next',
       'fancy-log',
-      'eslint',
+      'eslint@next', // React.Fragment is supported since eslint@5
       'babel-eslint',
       'eslint-import-resolver-webpack',
       'eslint-plugin-import',
