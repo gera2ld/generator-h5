@@ -38,7 +38,7 @@ module.exports = {
     'no-console': ['warn', {
       allow: ['error', 'warn', 'info'],
     }],
-    indent: 'off',
+    indent: ['error', 2, { MemberExpression: 0 }],
 <% if (frameworks.react) { -%>
     'react/jsx-filename-extension': 'off',
 <% } -%>
