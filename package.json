@@ -11,7 +11,6 @@
   "author": "Gerald <i@gerald.top>",
   "license": "ISC",
   "dependencies": {
-    "mz": "^2.7.0",
     "yeoman-generator": "^2.0.1"
   },
   "repository": "git@github.com:gera2ld/generator-h5.git"
