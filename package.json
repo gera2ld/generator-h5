@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "Generate a project to develop HTML 5 pages",
   "files": [
-    "app"
+    "lib"
   ],
   "keywords": [
     "yeoman-generator"
