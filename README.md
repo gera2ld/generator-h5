@@ -16,10 +16,12 @@ Features
 - Webpack v4 + Babel v7
 - Scale document elements with `rem`
 - Reveal.js support
+- JSX support for DOM
 
 Generators:
 - `@gera2ld/h5`
 - `@gera2ld/h5:reveal`
+- `@gera2ld/h5:jsx-dom`
 
 Installation
 ---
@@ -51,4 +53,11 @@ Usage
     ```sh
     $ cd my-project
     $ yo @gera2ld/h5:reveal
+    ```
+
+- Initialize a project with JSX support:
+
+    ```sh
+    $ cd my-project
+    $ yo @gera2ld/h5:jsx-dom
     ```
