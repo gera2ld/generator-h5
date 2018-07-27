@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "gulp browser",
-    "prebuild": "yarn lint && gulp clean",
+    "prebuild": "npm run lint && gulp clean",
     "build": "cross-env NODE_ENV=production gulp build",
     "lint": "eslint --ext .js,.vue .",
     "svgo": "svgo --config .svgo.yml src/resources/icons"
@@ -17,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn lint"
+      "pre-push": "npm run lint"
     }
   }
 }
