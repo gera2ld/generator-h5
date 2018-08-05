@@ -6,6 +6,8 @@
     }],
   ],
   "plugins": [
+    "@babel/plugin-transform-runtime",
+
     // stage-2
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     "@babel/plugin-proposal-function-sent",
@@ -18,7 +20,5 @@
     "@babel/plugin-syntax-import-meta",
     ["@babel/plugin-proposal-class-properties", { "loose": false }],
     "@babel/plugin-proposal-json-strings",
-
-    ["@babel/plugin-transform-runtime", { "polyfill": false }]
   ]
 }
