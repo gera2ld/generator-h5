@@ -3,13 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <title><%= htmlWebpackPlugin.options.title %></title>
-<% htmlWebpackPlugin.options.css.map(url => {
+<%
+htmlWebpackPlugin.options.css.forEach(url => {
 %><link rel="stylesheet" href="<%= url %>"><%
 });
-htmlWebpackPlugin.options.js.map(url => {
+htmlWebpackPlugin.options.inlineSource && htmlWebpackPlugin.files.css.forEach(file => {
+%><style><%= compilation.assets[file.slice(htmlWebpackPlugin.files.publicPath.length)].source() %></style><%
+});
+htmlWebpackPlugin.options.js.forEach(url => {
 %><script src="<%= url %>"></script><%
 });
 %></head>
-<body>
-</body>
+<body><%
+htmlWebpackPlugin.options.inlineSource && htmlWebpackPlugin.files.js.forEach(file => {
+%><script><%= compilation.assets[file.slice(htmlWebpackPlugin.files.publicPath.length)].source().replace(/<(\/script>)/g, '\\x3c$2') %></script><%
+});
+%></body>
 </html>
