@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title><%= htmlWebpackPlugin.options.title %></title>
 <%
+if (htmlWebpackPlugin.options.manifest) {
+%><link rel="manifest" href="<%= htmlWebpackPlugin.options.manifest %>"><%
+}
 htmlWebpackPlugin.options.css.forEach(url => {
 %><link rel="stylesheet" href="<%= url %>"><%
 });
