@@ -11,7 +11,8 @@
   "author": "Gerald <i@gerald.top>",
   "license": "ISC",
   "dependencies": {
-    "yeoman-generator": "^2.0.1"
+    "yeoman-generator": "^3.1.1"
   },
+  "main": "lib/generators/app/index.js",
   "repository": "git@github.com:gera2ld/generator-h5.git"
 }
