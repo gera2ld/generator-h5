@@ -4,6 +4,7 @@
       "modules": false,
       "useBuiltIns": "usage"
     }],
+/** BABEL_PRESETS **/
   ],
   "plugins": [
     "@babel/plugin-transform-runtime",
