@@ -26,6 +26,9 @@
       "alias": {
         "#": "./src",
       },
+      "extensions": [
+        ".js", ".vue"
+      ],
     }],
   ]
 }
