@@ -6,9 +6,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "webpack-util develop",
     "prebuild": "npm run lint",
-    "build": "webpack-util build",
     "lint": "eslint --ext .js,.vue .",
     "analyze": "cross-env RUN_ENV=analyze npm run build",
     "svgo": "svgo --config .svgo.yml src/resources/svg"
