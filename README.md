@@ -17,6 +17,7 @@ Features
 - Scale document elements with `rem`
 - Reveal.js support
 - JSX support for DOM
+- TypeScript support
 
 Generators:
 - `@gera2ld/h5`
