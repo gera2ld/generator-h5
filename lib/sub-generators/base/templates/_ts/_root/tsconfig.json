@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "baseUrl": "src",
+    "paths": {
+      "#/*": ["./*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
