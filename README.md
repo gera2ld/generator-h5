@@ -26,7 +26,6 @@ Generators:
 
 Installation
 ---
-It is highly recommended to use with Yarn.
 
 ``` sh
 $ yarn global add @gera2ld/generator-h5
@@ -37,6 +36,12 @@ $ cd path/to/generator-h5 && yarn link
 
 # Make sure yo is installed
 $ yarn global add yo
+```
+
+One time usage with `npx`:
+
+```sh
+$ npx -p @gera2ld/generator-h5 -p yo yo @gera2ld/h5
 ```
 
 Usage
