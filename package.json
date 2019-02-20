@@ -1,6 +1,6 @@
 {
   "name": "@gera2ld/generator-h5",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Generate a project to develop HTML 5 pages",
   "files": [
     "lib"
