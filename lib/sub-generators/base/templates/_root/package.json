@@ -12,7 +12,7 @@
     "svgo": "plaid svgo"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">= 10"
   },
   "husky": {
     "hooks": {
