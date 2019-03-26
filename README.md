@@ -42,6 +42,9 @@ One time usage with `npx`:
 
 ```sh
 $ npx -p @gera2ld/generator-h5 -p yo yo @gera2ld/h5
+
+# or use the latest version from git
+$ npx -p git+ssh://git@github.com:gera2ld/generator-h5.git -p yo yo @gera2ld/h5
 ```
 
 Usage
