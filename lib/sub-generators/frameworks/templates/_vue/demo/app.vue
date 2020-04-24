@@ -1,5 +1,9 @@
 <template>
-  <h1 v-text="message"></h1>
+  <div class="container mx-auto px-4">
+    <div class="bg-green-200 p-4">
+      <div class="bg-green-400 p-4" v-text="message"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -11,9 +15,3 @@ export default {
   },
 };
 </script>
-
-<style>
-h1 {
-  color: blue;
-}
-</style>

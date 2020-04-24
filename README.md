@@ -9,13 +9,14 @@ Requires Node.js v8.0+.
 ## Features
 
 - Latest ECMAScript features
-- Multiple pages support via a config file
-- Popular frameworks support: Vue, React
+- Multiple pages via a config file
+- Popular frameworks: Vue, React
 - Webpack v4 + Babel v7
 - Scale document elements with `rem`
-- Reveal.js support
-- JSX support for DOM
-- TypeScript support
+- Reveal.js
+- JSX for DOM
+- TypeScript
+- tailwindcss
 
 Generators:
 - `@gera2ld/h5`
