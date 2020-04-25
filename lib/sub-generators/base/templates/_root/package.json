@@ -6,7 +6,6 @@
   "author": "",
   "scripts": {
     "prebuild": "npm run lint",
-    "lint": "eslint --ext .js,.vue .",
     "analyze": "plaid analyze",
     "svgo": "plaid svgo"
   },
