@@ -1,10 +1,9 @@
-<%= name %>
----
+# <%= name %>
 
 This is an HTML 5 project built with yeoman and generator-h5.
 
-Development
----
+## Development
+
 ``` sh
 $ yarn
 $ yarn dev
@@ -12,8 +11,8 @@ $ yarn dev
 
 Pages can be added in `scripts/plaid.conf.js`.
 
-Building
----
+## Building
+
 ```sh
 $ yarn build
 ```
