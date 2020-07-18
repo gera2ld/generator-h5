@@ -6,7 +6,7 @@
   "author": "",
   "scripts": {
     "prebuild": "npm run lint",
-    "analyze": "plaid analyze",
+    "analyze": "plaid build -a",
     "svgo": "plaid svgo"
   },
   "engines": {
