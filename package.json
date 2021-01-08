@@ -10,9 +10,16 @@
   ],
   "author": "Gerald <i@gerald.top>",
   "license": "ISC",
+  "main": "lib/generators/app/index.js",
+  "repository": "git@github.com:gera2ld/generator-h5.git",
   "dependencies": {
     "yeoman-generator": "^4.9.0"
   },
-  "main": "lib/generators/app/index.js",
-  "repository": "git@github.com:gera2ld/generator-h5.git"
+  "devDependencies": {
+    "ejs-lint": "^0.3.0",
+    "npm-check-updates": "^9.1.2"
+  },
+  "scripts": {
+    "update:deps": "ncu --packageFile lib/util/deps.json"
+  }
 }
