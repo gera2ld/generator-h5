@@ -13,11 +13,11 @@
   "main": "lib/generators/app/index.js",
   "repository": "git@github.com:gera2ld/generator-h5.git",
   "dependencies": {
-    "yeoman-generator": "^4.9.0"
+    "yeoman-generator": "^4.13.0"
   },
   "devDependencies": {
-    "ejs-lint": "^0.3.0",
-    "npm-check-updates": "^9.1.2"
+    "ejs-lint": "^1.1.0",
+    "npm-check-updates": "^11.1.8"
   },
   "scripts": {
     "update:deps": "ncu --packageFile lib/util/deps.json"
