@@ -4,17 +4,7 @@
   "private": true,
   "description": "",
   "author": "",
-  "scripts": {
-    "prebuild": "npm run lint",
-    "analyze": "plaid build -a",
-    "svgo": "plaid svgo"
-  },
   "engines": {
     "node": ">=12"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "npm run lint"
-    }
   }
 }
