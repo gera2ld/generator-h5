@@ -1,6 +1,4 @@
 # See https://github.com/ai/browserslist#config-file for details
-<% if (target) { -%>
 defaults
-<% } else { -%>
-last 2 Chrome versions
-<% } -%>
+not IE 11
+maintained node versions
